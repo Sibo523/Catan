@@ -34,8 +34,14 @@ void Tile::print(){
 }
 void Tile::addVertex(Vertex v,size_t index)
 {   
-    if (index >= 6 || index < 0){
+    if (index >= 7 || index < 1){
         throw std::invalid_argument("Index out of bounds");
     }
-    adjacentVertices[index] = v;
+    adjacentVertices[index-1] = v;
+}
+Vertex Tile::getVertex(size_t index){
+    if (index >= 7 || index < 1){
+        throw std::invalid_argument("Index out of bounds");
+    }
+    return adjacentVertices[index-1];
 }

@@ -14,6 +14,7 @@ public:
     std::string toString() const;
     void addVertex(Vertex v,size_t index);
     void print();
+    Vertex getVertex(size_t index);
 private:
     std::string type; // e.g., "wood", "brick", "sheep", "wheat", "ore", "desert"
     int numberToken;

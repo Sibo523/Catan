@@ -20,12 +20,20 @@ public:
     // friend std::ostream& operator<<(std::ostream& os,Board& b);//print the graph
 
 private:
+    // helper function
+    bool checkValidTile(int x, int y);
+
+    //for the vertices
+    void put3254(int x, int y,Vertex v1, Vertex v2);
+    void fourToOne(int x, int y);
+    void sixToTwo(int x, int y);
+    //for the hexagons
     void initializeVertices();
+    //didn't do yet
     std::vector<std::pair<int, int>> ports;
     std::pair<int, int> robberPosition;
     int generate_number_token(std::vector<std::pair<int,int>> &numberTokens );
     std::string generate_resource(    std::vector<std::pair<std::string,int>>& numberTokens);
-    bool checkValidTile(int x, int y);
 };
 
 #endif // BOARD_H
