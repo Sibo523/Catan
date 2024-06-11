@@ -180,13 +180,13 @@ void Board::setupBoard()
 
 void Board::printBoard()
 {
-    std::vector<std::string> resources = {"         ", "     ", "", "     ", "         "};
+    std::vector<std::string> resources = {"           ", "     ", "", "     ", "           "};
 
     // Print the top row of vertex owners
-    std::cout << "              ";
+    std::cout << "                ";
     for (size_t i = 0; i < tiles[0].size(); ++i)
     {
-        std::cout << WHITE << std::setw(8) << tiles[0][i].getVertex(1).getOwner() << RESET << "  ";
+        std::cout << WHITE << std::setw(9) << tiles[0][i].getVertex(1).getOwner() << RESET << "  ";
     }
     std::cout << std::endl;
 
@@ -239,10 +239,10 @@ void Board::printBoard()
     }
 
     // Print the end of the board
-    std::cout << "              ";
+    std::cout << "                ";
     for (size_t i = 0; i < tiles[4].size(); ++i)
     {
-        std::cout << WHITE << std::setw(8) << tiles[4][i].getVertex(6).getOwner() << RESET << "  ";
+        std::cout << WHITE << std::setw(9) << tiles[4][i].getVertex(6).getOwner() << RESET << "  ";
     }
 }
 
