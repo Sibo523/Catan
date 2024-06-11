@@ -23,6 +23,8 @@ const std::string WHITE = "\033[37m";
 class Board {
 public:
     Board();
+    ~Board();
+
     void placeRobber(int x, int y);
     void moveRobber(int x, int y);
     void generateResources(int diceRoll);
@@ -40,7 +42,7 @@ private:
     bool checkValidTile(int x, int y);
     void ReleventTiles(int, std::vector<std::pair<Tile,int>> &tiles);
     //for the vertices
-    void put3254(int x, int y,Vertex v1, Vertex v2);
+    void put3254(int x, int y,Vertex* v1, Vertex* v2);
     void fourToOne(int x, int y);
     void sixToTwo(int x, int y);
     //for the hexagons

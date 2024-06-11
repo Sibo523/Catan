@@ -6,6 +6,24 @@ Board::Board()
     // Initialize the board
     setupBoard();
 }
+Board::~Board()
+{
+    for (size_t i = 0; i < tiles.size(); i++)
+    {
+        for (size_t j = 0; j < tiles[i].size(); j++)
+        {
+            for (size_t k = 1; k < 7; k++)
+            {
+                if (tiles[i][j].getVertexPointer(k) != NULL)
+                {
+                    continue;
+                }
+                
+                delete tiles[i][j].getVertexPointer(k);
+            }
+        }
+    }
+}
 
 void Board::placeRobber(int x, int y)
 {
@@ -82,7 +100,7 @@ bool Board::buildSet(int x, int y, int z, std::string name){
     }
     int ver = tiles[x][y].getVertex(z).getOwnerint(); // I know what is the name of the owner
     
-    std::vector<std::pair<Tile,int>> relevantTiles; // Add template arguments to std::pair
+    std::vector<std::pair<Tile,int>> relevantTiles; 
     ReleventTiles(ver,relevantTiles);
     for (int i = 0; i < relevantTiles.size(); i++)
     {
@@ -108,23 +126,27 @@ void Board::initializeVertices()
     int num = 0;
     for (size_t i = 0; i < tiles[0].size(); i++)
     {
-        tiles[0][i].addVertex( Vertex(num++, 1), 1);
+        Vertex* v = new Vertex(num++, 1);
+        tiles[0][i].addVertex(v, 1);
     }
     for (size_t i = 0; i < tiles.size(); i++)
     {
-        tiles[i][0].addVertex( Vertex(num++, 1), 2); // the fucking token does nothing
-        tiles[i][0].addVertex(Vertex(num++, 2), 4);
+        Vertex* v1 = new Vertex(num++, 1);
+        Vertex* v2 = new Vertex(num++, 2);
+        tiles[i][0].addVertex(v1, 2);
+        tiles[i][0].addVertex(v2, 4);
+
 
         for (size_t j = 0; j < tiles[i].size(); j++)
         {
             int temp = num;
-            Vertex v1 = Vertex(num++, 1);
-            Vertex v2 = Vertex(num++, 2);
-            tiles[i][j].addVertex(v1, 3);
-            tiles[i][j].addVertex(v2, 5);
+            Vertex* v3 = new Vertex(num++, 1);
+            Vertex* v4 = new Vertex(num++, 2);
+            tiles[i][j].addVertex(v3, 3);
+            tiles[i][j].addVertex(v4, 5);
 
             // for indexes 3,2 and 5,4
-            put3254(i, j, v1, v2);
+            put3254(i, j, v3, v4);
             // for indexes 1top left5 or right 4 and 6 donn left 3 or right2
             fourToOne(i, j);
         }
@@ -139,10 +161,13 @@ void Board::initializeVertices()
     }
     for (size_t i = 0; i < tiles[4].size(); i++)
     {
-        tiles[4][i].addVertex(Vertex(num++, 1), 6);
+        Vertex* v = new Vertex(num++, 1);
+        tiles[4][i].addVertex(v, 6);
+
     }
 }
-void Board::put3254(int i, int j, Vertex v1, Vertex v2)
+
+void Board::put3254(int i, int j, Vertex* v1, Vertex* v2)
 {
     if (checkValidTile(i, j + 1))
     { // check inbound
@@ -157,11 +182,11 @@ void Board::fourToOne(int i, int j)
         // std::cout<<tiles[i-1].size()<<std::endl;
         if (j == tiles[i - 1].size())
         { // if I am in the end I have to go back by one
-            tiles[i][j].addVertex(tiles[i - 1][j - 1].getVertex(5), 1);
+            tiles[i][j].addVertex(tiles[i - 1][j - 1].getVertexPointer(5), 1);
         }
         else
         {
-            tiles[i][j].addVertex(tiles[i - 1][j].getVertex(4), 1);
+            tiles[i][j].addVertex(tiles[i - 1][j].getVertexPointer(4), 1);
         }
     }
 }
@@ -171,13 +196,11 @@ void Board::sixToTwo(int i, int j)
     {
         if (j == tiles[i + 1].size())
         {
-            // std::cout<<"got in"<<std::endl;
-            // tiles[i+1][j-1].print();
-            tiles[i][j].addVertex(tiles[i + 1][j - 1].getVertex(3), 6);
+            tiles[i][j].addVertex(tiles[i + 1][j - 1].getVertexPointer(3), 6);
         }
         else
         {
-            tiles[i][j].addVertex(tiles[i + 1][j].getVertex(3), 6);
+            tiles[i][j].addVertex(tiles[i + 1][j].getVertexPointer(3), 6);
         }
     }
 }
@@ -295,7 +318,7 @@ void Board::printBoard()
                 {
                     if(tiles[i][j].getVertex(k).isSettled() )
                     {
-                        std::cout<< "I guess it works"<< k << std::endl;
+                        //std::cout<< "I guess it works"<< k << std::endl;
                     }
                 }
             }

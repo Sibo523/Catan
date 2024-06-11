@@ -11,6 +11,7 @@ class Vertex
 
 public:
     Vertex(int owner, int numberToken); // no need for owner I think
+    ~Vertex();
     std::string getOwner();
     bool isSettled();
     void settle();

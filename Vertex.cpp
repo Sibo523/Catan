@@ -1,6 +1,9 @@
 #include "Vertex.h"
-Vertex::Vertex(int owner, int numberToken) : owner(owner), numberToken(numberToken) {}
-
+Vertex::Vertex(int owner, int numberToken) : owner(owner), numberToken(numberToken), flag(false) {}
+Vertex::~Vertex()
+{
+    // delete this;
+}
 
 std::string Vertex::getOwner()
 {
@@ -10,7 +13,7 @@ int Vertex::getOwnerint()
 {
     return owner;
 }
-//cannot unsettle
+// cannot unsettle
 void Vertex::settle()
 {
     flag = true;

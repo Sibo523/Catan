@@ -12,7 +12,7 @@ public:
     std::string getResource() const;
     int getNumberToken() const;
     std::string toString() const;
-    void addVertex(Vertex v,size_t index);
+    void addVertex(Vertex* v,size_t index);
     void print();
     Vertex getVertex(size_t index);
     Vertex* getVertexPointer(size_t index);
@@ -23,7 +23,7 @@ private:
     bool hasting(int x);
     std::string type; // e.g., "wood", "brick", "sheep", "wheat", "ore", "desert"
     int numberToken;
-    std::vector<Vertex> adjacentVertices; // coordinates of vertices run on adjacent to check for settlements
+    std::vector<Vertex*> adjacentVertices; // coordinates of vertices run on adjacent to check for settlements
     // std::vector<std::pair<int, int>> players; // coordinates of edges
 };
 
