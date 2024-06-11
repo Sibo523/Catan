@@ -40,7 +40,7 @@ public:
 
 private:
     // helper function
-    bool checkValidTile(int x, int y);
+    bool checkValidTile(size_t x, size_t y);
     void ReleventTiles(int, std::vector<std::pair<Tile,int>> &tiles);
     //for the vertices
     void put3254(int x, int y,Vertex* v1, Vertex* v2);

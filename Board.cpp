@@ -1,4 +1,6 @@
 #include "Board.h"
+#include <iomanip>
+#include <unordered_set>
 
 Board::Board()
 {
@@ -10,9 +12,9 @@ Board::~Board() // I wanted a simple implemantation of the destructor but I had 
 {
     std::unordered_set<Vertex*> deletedVertices;
 
-    for (size_t i = 0; i < tiles.size(); i++)
+    for (size_t i = 0; i < (size_t)tiles.size(); i++)
     {
-        for (size_t j = 0; j < tiles[i].size(); j++)
+        for (size_t j = 0; j < (size_t)tiles[i].size(); j++)
         {
             for (size_t k = 1; k < 7; k++)
             {
@@ -74,7 +76,7 @@ std::string Board::generate_resource(std::vector<std::pair<std::string, int>> &n
     numberTokens[num].second--;
     return numberTokens[num].first;
 }
-bool Board::checkValidTile(int x, int y)
+bool Board::checkValidTile(size_t x, size_t y)
 { // row, col
     if (x < 0 || x >= tiles.size() || y < 0 || y >= tiles[x].size())
     {
@@ -87,11 +89,11 @@ bool Board::checkValidTile(int x, int y)
 
 void Board::ReleventTiles(int ver, std::vector<std::pair<Tile, int>> &relevantTiles)
 {
-    for (int i = 0; i < tiles.size(); i++)
+    for (size_t i = 0; i < tiles.size(); i++)
     {
-        for (int j = 0; j < tiles[i].size(); j++)
+        for (size_t j = 0; j < tiles[i].size(); j++)
         {
-            for (int k = 1; k < 7; k++) // 1 to 6 technically
+            for (size_t k = 1; k < 7; k++) // 1 to 6 technically
             {
                 if (tiles[i][j].getVertex(k).getOwnerint() == ver) // almost fucked this up lol k+1 means 
                 {
@@ -101,7 +103,7 @@ void Board::ReleventTiles(int ver, std::vector<std::pair<Tile, int>> &relevantTi
         }
     }
 }
-bool Board::buildSet(int x, int y, int z, std::string name){
+bool Board::buildSet(int x, int y, int z, std::string name){ //need to use name for the player thingi
     if (tiles[x][y].getVertex(z).isSettled()){
         return false;
     }
@@ -109,7 +111,7 @@ bool Board::buildSet(int x, int y, int z, std::string name){
     
     std::vector<std::pair<Tile,int>> relevantTiles; 
     ReleventTiles(ver,relevantTiles);
-    for (int i = 0; i < relevantTiles.size(); i++)
+    for (size_t i = 0; i < relevantTiles.size(); i++)
     {
         if (relevantTiles[i].first.neighborSet(relevantTiles[i].second)) // I get into the tile and then find the neigbor set of 
         {
@@ -146,7 +148,6 @@ void Board::initializeVertices()
 
         for (size_t j = 0; j < tiles[i].size(); j++)
         {
-            int temp = num;
             Vertex* v3 = new Vertex(num++, 1);
             Vertex* v4 = new Vertex(num++, 2);
             tiles[i][j].addVertex(v3, 3);
@@ -186,7 +187,7 @@ void Board::fourToOne(int i, int j)
     if (checkValidTile(i - 1, 0))
     { // for 1,4
         // std::cout<<tiles[i-1].size()<<std::endl;
-        if (j == tiles[i - 1].size())
+        if ((size_t)j == tiles[i - 1].size())
         { // if I am in the end I have to go back by one
             tiles[i][j].addVertex(tiles[i - 1][j - 1].getVertexPointer(5), 1);
         }
@@ -200,7 +201,7 @@ void Board::sixToTwo(int i, int j)
 {
     if (checkValidTile(i + 1, 0))
     {
-        if (j == tiles[i + 1].size())
+        if ((size_t) j == tiles[i + 1].size())
         {
             tiles[i][j].addVertex(tiles[i + 1][j - 1].getVertexPointer(3), 6);
         }
@@ -217,7 +218,7 @@ void Board::initializeTiles()
         {"wood", 4}, {"brick", 3}, {"sheep", 4}, {"wheat", 4}, {"ore", 3}};
     std::vector<std::pair<int, int>> numberTokens = {
         {2, 1}, {3, 2}, {4, 2}, {5, 2}, {6, 2}, {8, 2}, {9, 2}, {10, 2}, {11, 2}, {12, 1}};
-    std::vector<int> cols = {3, 4, 5, 4, 3};
+    std::vector<size_t> cols = {3, 4, 5, 4, 3};
     for (size_t i = 0; i < 5; i++)
     {
         std::vector<Tile> row;
