@@ -6,10 +6,11 @@
 #include "Tile.h"
 #include <iostream>
 #include <iomanip>
-#include <iostream>
 #include <iomanip>
 #include <vector>
 #include <string>
+#include <unordered_set>
+
 
 const std::string RESET = "\033[0m";
 const std::string RED = "\033[31m";

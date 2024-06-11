@@ -1,29 +1,36 @@
 #include "Board.h"
-#include <iomanip>
 
 Board::Board()
 {
     // Initialize the board
     setupBoard();
 }
-Board::~Board()
+
+Board::~Board() // I wanted a simple implemantation of the destructor but I had to do this :(
 {
+    std::unordered_set<Vertex*> deletedVertices;
+
     for (size_t i = 0; i < tiles.size(); i++)
     {
         for (size_t j = 0; j < tiles[i].size(); j++)
         {
             for (size_t k = 1; k < 7; k++)
             {
-                if (tiles[i][j].getVertexPointer(k) != NULL)
+                Vertex* vertex = tiles[i][j].getVertexPointer(k);
+                if (vertex == NULL || deletedVertices.count(vertex))
                 {
                     continue;
                 }
                 
-                delete tiles[i][j].getVertexPointer(k);
+                delete vertex;
+                deletedVertices.insert(vertex);
             }
         }
     }
 }
+    
+    
+
 
 void Board::placeRobber(int x, int y)
 {
@@ -166,7 +173,6 @@ void Board::initializeVertices()
 
     }
 }
-
 void Board::put3254(int i, int j, Vertex* v1, Vertex* v2)
 {
     if (checkValidTile(i, j + 1))
@@ -310,19 +316,19 @@ void Board::printBoard()
     {
         std::cout << WHITE << std::setw(9) << tiles[4][i].getVertex(6).getOwner() << RESET << "  ";
     }
-    for(int i =0; i < tiles.size(); i++)
-        {
-            for(int j = 0; j <tiles[i].size(); j++)
-            {
-                for(int k = 1; k < 7; k++)
-                {
-                    if(tiles[i][j].getVertex(k).isSettled() )
-                    {
-                        //std::cout<< "I guess it works"<< k << std::endl;
-                    }
-                }
-            }
-        }
+    // for(int i =0; i < tiles.size(); i++)
+    //     {
+    //         for(int j = 0; j <tiles[i].size(); j++)
+    //         {
+    //             for(int k = 1; k < 7; k++)
+    //             {
+    //                 if(tiles[i][j].getVertex(k).isSettled() )
+    //                 {
+    //                     //std::cout<< "I guess it works"<< k << std::endl;
+    //                 }
+    //             }
+    //         }
+    //     }
     
 }
 
