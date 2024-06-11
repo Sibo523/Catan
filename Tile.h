@@ -15,7 +15,12 @@ public:
     void addVertex(Vertex v,size_t index);
     void print();
     Vertex getVertex(size_t index);
+    Vertex* getVertexPointer(size_t index);
+    bool neighborSet(size_t index);
+    void printSettelments();
 private:
+    //needs to contains a settelment if it's null then we good
+    bool hasting(int x);
     std::string type; // e.g., "wood", "brick", "sheep", "wheat", "ore", "desert"
     int numberToken;
     std::vector<Vertex> adjacentVertices; // coordinates of vertices run on adjacent to check for settlements

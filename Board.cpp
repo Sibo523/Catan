@@ -57,6 +57,47 @@ bool Board::checkValidTile(int x, int y)
     }
     return true;
 }
+
+
+
+void Board::ReleventTiles(int ver, std::vector<std::pair<Tile, int>> &relevantTiles)
+{
+    for (int i = 0; i < tiles.size(); i++)
+    {
+        for (int j = 0; j < tiles[i].size(); j++)
+        {
+            for (int k = 1; k < 7; k++) // 1 to 6 technically
+            {
+                if (tiles[i][j].getVertex(k).getOwnerint() == ver) // almost fucked this up lol k+1 means 
+                {
+                    relevantTiles.push_back(std::make_pair(tiles[i][j], k));
+                }
+            }
+        }
+    }
+}
+bool Board::buildSet(int x, int y, int z, std::string name){
+    if (tiles[x][y].getVertex(z).isSettled()){
+        return false;
+    }
+    int ver = tiles[x][y].getVertex(z).getOwnerint(); // I know what is the name of the owner
+    
+    std::vector<std::pair<Tile,int>> relevantTiles; // Add template arguments to std::pair
+    ReleventTiles(ver,relevantTiles);
+    for (int i = 0; i < relevantTiles.size(); i++)
+    {
+        if (relevantTiles[i].first.neighborSet(relevantTiles[i].second)) // I get into the tile and then find the neigbor set of 
+        {
+            return false;
+        }
+    }
+    tiles[x][y].getVertexPointer(z)->settle();
+    return true;
+}
+
+
+
+//the whole setup 
 /**
  * @brief Initialize the vertices of the board
  *
@@ -67,11 +108,11 @@ void Board::initializeVertices()
     int num = 0;
     for (size_t i = 0; i < tiles[0].size(); i++)
     {
-        tiles[0][i].addVertex(Vertex(num++, 1), 1);
+        tiles[0][i].addVertex( Vertex(num++, 1), 1);
     }
     for (size_t i = 0; i < tiles.size(); i++)
     {
-        tiles[i][0].addVertex(Vertex(num++, 1), 2); // the fucking token does nothing
+        tiles[i][0].addVertex( Vertex(num++, 1), 2); // the fucking token does nothing
         tiles[i][0].addVertex(Vertex(num++, 2), 4);
 
         for (size_t j = 0; j < tiles[i].size(); j++)
@@ -191,7 +232,7 @@ void Board::printBoard()
     std::cout << std::endl;
 
     // Print the rest of the board
-    for (size_t i = 0; i < tiles.size(); ++i)
+    for(size_t i = 0; i < tiles.size(); ++i)
     {
         for (int k = 0; k < 2; ++k)
         {
@@ -212,13 +253,14 @@ void Board::printBoard()
             }
             std::cout << std::endl;
             
-            if (k == 0)
+            if(k == 0)
             {
                 std::cout << resources[i] + "       ";
-                for (size_t j = 0; j < tiles[i].size(); ++j)
+                for(size_t j = 0; j < tiles[i].size(); ++j)
                 {
                     // Assuming resources and number tokens are strings for simplicity
                     std::string resource = tiles[i][j].getResource();
+                    
                     std::string numberToken = std::to_string(tiles[i][j].getNumberToken());
                     
                     // Assign colors based on resource type
@@ -236,6 +278,7 @@ void Board::printBoard()
                 std::cout << std::endl;
             }
         }
+        
     }
 
     // Print the end of the board
@@ -244,13 +287,31 @@ void Board::printBoard()
     {
         std::cout << WHITE << std::setw(9) << tiles[4][i].getVertex(6).getOwner() << RESET << "  ";
     }
+    for(int i =0; i < tiles.size(); i++)
+        {
+            for(int j = 0; j <tiles[i].size(); j++)
+            {
+                for(int k = 1; k < 7; k++)
+                {
+                    if(tiles[i][j].getVertex(k).isSettled() )
+                    {
+                        std::cout<< "I guess it works"<< k << std::endl;
+                    }
+                }
+            }
+        }
+    
 }
-
 
 void Board::getTile(const size_t x, const size_t y)
 {
     tiles[x][y].print();
     std::cout << std::endl;
+}
+void Board::printTileSet(int x, int y)
+{   
+    tiles[x][y].printSettelments();
+    std::cout<<std::endl;
 }
 
 // std::ostream& operator<<(std::ostream& os, const Board& board) {

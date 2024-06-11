@@ -31,13 +31,14 @@ public:
     void getTile(size_t x, size_t y);
     std::vector<std::vector<Tile>> getTiles();
     std::vector<std::vector<Tile>> tiles;
-
+    bool buildSet(int x, int y, int z,std::string player);
+    void printTileSet(int x, int y);
     // friend std::ostream& operator<<(std::ostream& os,Board& b);//print the graph
 
 private:
     // helper function
     bool checkValidTile(int x, int y);
-
+    void ReleventTiles(int, std::vector<std::pair<Tile,int>> &tiles);
     //for the vertices
     void put3254(int x, int y,Vertex v1, Vertex v2);
     void fourToOne(int x, int y);
