@@ -4,8 +4,16 @@
 #include <vector>
 #include <utility> // for std::pair
 #include <string>
-#include "Vertex.h"
 #include <array>
+#include <stdexcept>
+#include <iostream>
+
+#include "Vertex.h"
+
+
+#define RED_TEXT "\033[1;31m"
+#define RESET_TEXT "\033[0m"
+
 class Tile {
 public:
     Tile(std::string type, int numberToken);

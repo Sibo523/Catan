@@ -3,14 +3,14 @@
 
 #include <vector>
 #include <utility> // for std::pair
-#include "Tile.h"
 #include <iostream>
 #include <iomanip>
 #include <iomanip>
 #include <vector>
 #include <string>
 #include <unordered_set>
-
+#include "Tile.h"
+// #include "Settlement.h"
 
 const std::string RESET = "\033[0m";
 const std::string RED = "\033[31m";
@@ -26,19 +26,22 @@ public:
     Board();
     ~Board();
 
-    void placeRobber(int x, int y);
-    void moveRobber(int x, int y);
-    void generateResources(int diceRoll);
+    void placeRobber(int x, int y); // not implmented yet but it enters into the tile and turn off the flag tha allows me to get resources
+    void moveRobber(int x, int y); //undo the tiles so it can get resources and do the same thing as place robber
+    void generateResources(int diceRoll); //give the resources to the playres assigned to that tile according to the settelments
     void setupBoard();
     void printBoard();
     void getTile(size_t x, size_t y);
     std::vector<std::vector<Tile>> getTiles();
-    std::vector<std::vector<Tile>> tiles;
-    bool buildSet(int x, int y, int z,std::string player);
+    bool buildSet(int x, int y, int z,Player* player);
     void printTileSet(int x, int y);
+    bool upgradeToCity(int x, int y, int z,Player* player);
+    Vertex* getVertex(int x, int y, int z);
     // friend std::ostream& operator<<(std::ostream& os,Board& b);//print the graph
 
 private:
+    std::vector<std::vector<Tile>> tiles;
+
     // helper function
     bool checkValidTile(size_t x, size_t y);
     void ReleventTiles(int, std::vector<std::pair<Tile,int>> &tiles);
@@ -52,6 +55,7 @@ private:
     //didn't do yet
     std::vector<std::pair<int, int>> ports;
     std::pair<int, int> robberPosition;
+    //to create the tiles
     int generate_number_token(std::vector<std::pair<int,int>> &numberTokens );
     std::string generate_resource(    std::vector<std::pair<std::string,int>>& numberTokens);
 };

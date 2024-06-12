@@ -10,7 +10,7 @@ Board::Board()
 
 Board::~Board() // I wanted a simple implemantation of the destructor but I had to do this :(
 {
-    std::unordered_set<Vertex*> deletedVertices;
+    std::unordered_set<Vertex *> deletedVertices;
 
     for (size_t i = 0; i < (size_t)tiles.size(); i++)
     {
@@ -18,21 +18,23 @@ Board::~Board() // I wanted a simple implemantation of the destructor but I had 
         {
             for (size_t k = 1; k < 7; k++)
             {
-                Vertex* vertex = tiles[i][j].getVertexPointer(k);
+                Vertex *vertex = tiles[i][j].getVertexPointer(k);
+
                 if (vertex == NULL || deletedVertices.count(vertex))
                 {
                     continue;
                 }
-                
+                if (vertex->isSettled())
+                {
+                    delete vertex->set;
+                    // delete vertex->getSettlement();
+                }
                 delete vertex;
                 deletedVertices.insert(vertex);
             }
         }
     }
 }
-    
-    
-
 
 void Board::placeRobber(int x, int y)
 {
@@ -44,17 +46,29 @@ void Board::moveRobber(int x, int y)
     placeRobber(x, y);
 }
 
-// void Board::generateResources(int diceRoll) {
-//     // Logic to generate resources based on dice roll
-//     for (auto& row : tiles) {
-//         for (auto& tile : row) {
-//             if (tile.getNumberToken() == diceRoll) {
-//                 // Give resources to players
-//                 tile.getResource();
-//             }
-//         }
-//     }
-// }
+void Board::generateResources(int diceRoll)
+{
+    // Logic to generate resources based on dice roll
+    for (auto &row : tiles)
+    {
+        for (auto &tile : row)
+        {
+            if (tile.getNumberToken() == diceRoll)
+            {
+                // Give resources to players
+                // if there's a theif then I just don't do the rest and continue or something
+                for (int i = 1; i < 7; i++)
+                {
+                    if (tile.getVertex(i).isSettled())
+                    {
+                       tile.getVertex(i).getOwnerPlayer().addResource(tile.getResource(),tile.getVertex(i).getSettlement().getAmount());
+                    }
+                }
+                tile.getResource();
+            }
+        }
+    }
+}
 
 int Board::generate_number_token(std::vector<std::pair<int, int>> &numberTokens)
 {
@@ -85,8 +99,6 @@ bool Board::checkValidTile(size_t x, size_t y)
     return true;
 }
 
-
-
 void Board::ReleventTiles(int ver, std::vector<std::pair<Tile, int>> &relevantTiles)
 {
     for (size_t i = 0; i < tiles.size(); i++)
@@ -95,7 +107,7 @@ void Board::ReleventTiles(int ver, std::vector<std::pair<Tile, int>> &relevantTi
         {
             for (size_t k = 1; k < 7; k++) // 1 to 6 technically
             {
-                if (tiles[i][j].getVertex(k).getOwnerint() == ver) // almost fucked this up lol k+1 means 
+                if (tiles[i][j].getVertex(k).getOwnerint() == ver) // almost fucked this up lol k+1 means
                 {
                     relevantTiles.push_back(std::make_pair(tiles[i][j], k));
                 }
@@ -103,28 +115,76 @@ void Board::ReleventTiles(int ver, std::vector<std::pair<Tile, int>> &relevantTi
         }
     }
 }
-bool Board::buildSet(int x, int y, int z, std::string name){ //need to use name for the player thingi
-    if (tiles[x][y].getVertex(z).isSettled()){
+bool Board::buildSet(int x, int y, int z, Player *player)
+{ // need to use name for the player thingi
+    if (tiles[x][y].getVertex(z).isSettled())
+    {
         return false;
     }
     int ver = tiles[x][y].getVertex(z).getOwnerint(); // I know what is the name of the owner
-    
-    std::vector<std::pair<Tile,int>> relevantTiles; 
-    ReleventTiles(ver,relevantTiles);
+
+    std::vector<std::pair<Tile, int>> relevantTiles;
+    ReleventTiles(ver, relevantTiles);
     for (size_t i = 0; i < relevantTiles.size(); i++)
     {
-        if (relevantTiles[i].first.neighborSet(relevantTiles[i].second)) // I get into the tile and then find the neigbor set of 
+        if (relevantTiles[i].first.neighborSet(relevantTiles[i].second)) // I get into the tile and then find the neigbor set of
         {
             return false;
         }
     }
-    tiles[x][y].getVertexPointer(z)->settle();
+    if (!player->buildSettlement()){
+        return false;
+    }
+    Settlement *s = new Settlement(player);
+    tiles[x][y].getVertexPointer(z)->settle(s);
     return true;
 }
+bool manageProblems(Vertex* v, std::string name)
+{
+    if (v==nullptr){
+        std::cout<<"good luck";
+        return false;
+    }
+    if (!v->isSettled())
+    {
+        std::cout << "No settlment to upgrade" << std::endl;
+        return false;
+    }
+    if (v->getOwnerPlayer().getName() != name)
+    {
+        std::cout << "Not your settlement" << std::endl;
+        return false;
+    }
+    return true;
+}
+bool Board::upgradeToCity(int x, int y, int z, Player *player)
+{
+ 
+    Vertex* v = getVertex(x, y, z);
 
+    if (!manageProblems(v, player->getName()))
+    {
+        return false;
+    }
+    if (!player->upgradeToCity()){
+        return false;
+    }
 
+    v->getSettlementPtr()->upgradeToCity();
+    return true;
+    
+}
 
-//the whole setup 
+Vertex* Board::getVertex(int x, int y, int z)
+{
+    if (!checkValidTile(x, y) || z < 1 || z > 6)
+    {
+        throw std::invalid_argument("Invalid tile");
+    }
+    return tiles[x][y].getVertexPointer(z);
+}
+
+// the whole setup
 /**
  * @brief Initialize the vertices of the board
  *
@@ -135,21 +195,20 @@ void Board::initializeVertices()
     int num = 0;
     for (size_t i = 0; i < tiles[0].size(); i++)
     {
-        Vertex* v = new Vertex(num++, 1);
+        Vertex *v = new Vertex(num++, 1);
         tiles[0][i].addVertex(v, 1);
     }
     for (size_t i = 0; i < tiles.size(); i++)
     {
-        Vertex* v1 = new Vertex(num++, 1);
-        Vertex* v2 = new Vertex(num++, 2);
+        Vertex *v1 = new Vertex(num++, 1);
+        Vertex *v2 = new Vertex(num++, 2);
         tiles[i][0].addVertex(v1, 2);
         tiles[i][0].addVertex(v2, 4);
 
-
         for (size_t j = 0; j < tiles[i].size(); j++)
         {
-            Vertex* v3 = new Vertex(num++, 1);
-            Vertex* v4 = new Vertex(num++, 2);
+            Vertex *v3 = new Vertex(num++, 1);
+            Vertex *v4 = new Vertex(num++, 2);
             tiles[i][j].addVertex(v3, 3);
             tiles[i][j].addVertex(v4, 5);
 
@@ -169,12 +228,11 @@ void Board::initializeVertices()
     }
     for (size_t i = 0; i < tiles[4].size(); i++)
     {
-        Vertex* v = new Vertex(num++, 1);
+        Vertex *v = new Vertex(num++, 1);
         tiles[4][i].addVertex(v, 6);
-
     }
 }
-void Board::put3254(int i, int j, Vertex* v1, Vertex* v2)
+void Board::put3254(int i, int j, Vertex *v1, Vertex *v2)
 {
     if (checkValidTile(i, j + 1))
     { // check inbound
@@ -201,7 +259,7 @@ void Board::sixToTwo(int i, int j)
 {
     if (checkValidTile(i + 1, 0))
     {
-        if ((size_t) j == tiles[i + 1].size())
+        if ((size_t)j == tiles[i + 1].size())
         {
             tiles[i][j].addVertex(tiles[i + 1][j - 1].getVertexPointer(3), 6);
         }
@@ -262,7 +320,7 @@ void Board::printBoard()
     std::cout << std::endl;
 
     // Print the rest of the board
-    for(size_t i = 0; i < tiles.size(); ++i)
+    for (size_t i = 0; i < tiles.size(); ++i)
     {
         for (int k = 0; k < 2; ++k)
         {
@@ -282,33 +340,39 @@ void Board::printBoard()
                 std::cout << WHITE << std::setw(9) << tiles[i][j].getVertex(k == 0 ? 3 : 5).getOwner() << RESET << "  ";
             }
             std::cout << std::endl;
-            
-            if(k == 0)
+
+            if (k == 0)
             {
                 std::cout << resources[i] + "       ";
-                for(size_t j = 0; j < tiles[i].size(); ++j)
+                for (size_t j = 0; j < tiles[i].size(); ++j)
                 {
                     // Assuming resources and number tokens are strings for simplicity
                     std::string resource = tiles[i][j].getResource();
-                    
+
                     std::string numberToken = std::to_string(tiles[i][j].getNumberToken());
-                    
+
                     // Assign colors based on resource type
                     std::string color;
-                    if (resource == "wheat") color = YELLOW;
-                    else if (resource == "sheep") color = GREEN;
-                    else if (resource == "brick") color = RED;
-                    else if (resource == "ore") color = BLUE;
-                    else if (resource == "wood") color = MAGENTA;
-                    else if (resource == "desert") color = CYAN;
-                    else color = WHITE;
+                    if (resource == "wheat")
+                        color = YELLOW;
+                    else if (resource == "sheep")
+                        color = GREEN;
+                    else if (resource == "brick")
+                        color = RED;
+                    else if (resource == "ore")
+                        color = BLUE;
+                    else if (resource == "wood")
+                        color = MAGENTA;
+                    else if (resource == "desert")
+                        color = CYAN;
+                    else
+                        color = WHITE;
 
                     std::cout << color << std::setw(8) << resource + "-" + numberToken << RESET << "   ";
                 }
                 std::cout << std::endl;
             }
         }
-        
     }
 
     // Print the end of the board
@@ -330,7 +394,6 @@ void Board::printBoard()
     //             }
     //         }
     //     }
-    
 }
 
 void Board::getTile(const size_t x, const size_t y)
@@ -339,9 +402,9 @@ void Board::getTile(const size_t x, const size_t y)
     std::cout << std::endl;
 }
 void Board::printTileSet(int x, int y)
-{   
+{
     tiles[x][y].printSettelments();
-    std::cout<<std::endl;
+    std::cout << std::endl;
 }
 
 // std::ostream& operator<<(std::ostream& os, const Board& board) {

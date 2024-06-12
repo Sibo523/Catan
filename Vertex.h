@@ -4,7 +4,7 @@
 #include <vector>
 #include <utility> // for std::pair
 #include <string>
-// #include "Settlement.h"
+#include "Settlement.h"
 
 class Vertex
 {
@@ -14,8 +14,14 @@ public:
     ~Vertex();
     std::string getOwner();
     bool isSettled();
-    void settle();
+    void settle(Settlement* s);
     int getOwnerint();
+    Player getOwnerPlayer();
+    Settlement getSettlement();
+    Settlement* getSettlementPtr();
+    Settlement* set = nullptr;
+    bool operator==(const Vertex& other) const; // Checks if this graph is equal to another graph.
+
 private:
     bool flag = false;
     int owner; // e.g., "wood", "brick", "sheep", "wheat", "ore", "desert"
