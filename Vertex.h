@@ -1,7 +1,7 @@
 #ifndef Vertex_H
 #define Vertex_H
 
-#include <vector>
+// #include <vector>
 #include <utility> // for std::pair
 #include <string>
 #include "Settlement.h"
@@ -17,6 +17,7 @@ public:
     void settle(Settlement* s);
     int getOwnerint();
     Player getOwnerPlayer();
+    Player* getOwnerPlayerPtr();
     Settlement getSettlement();
     Settlement* getSettlementPtr();
     Settlement* set = nullptr;

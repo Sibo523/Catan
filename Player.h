@@ -17,6 +17,7 @@ public:
     bool buildSettlement();
     bool upgradeToCity();
     void addResource(std::string resource, int amount);
+    bool buildRoad();
     // void tradeResources(Player& otherPlayer, std::map<std::string, int> offer, std::map<std::string, int> request);
     // void useDevelopmentCard(std::string cardType);
     std::string showResources();
@@ -26,6 +27,7 @@ public:
     void setColor(std::string color);
     int getVictoryPoints() const;
 private:
+    bool canBuildRoad() const;
     std::string color;
     bool canBuildSettlement() const;
     bool canBuyDevCard() const;

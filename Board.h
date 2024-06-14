@@ -5,7 +5,6 @@
 #include <utility> // for std::pair
 #include <iostream>
 #include <iomanip>
-#include <iomanip>
 #include <vector>
 #include <string>
 #include <unordered_set>
@@ -26,6 +25,7 @@ public:
     Board();
     ~Board();
 
+
     void placeRobber(int x, int y); // not implmented yet but it enters into the tile and turn off the flag tha allows me to get resources
     void moveRobber(int x, int y); //undo the tiles so it can get resources and do the same thing as place robber
     void generateResources(int diceRoll); //give the resources to the playres assigned to that tile according to the settelments
@@ -37,11 +37,14 @@ public:
     void printTileSet(int x, int y);
     bool upgradeToCity(int x, int y, int z,Player* player);
     Vertex* getVertex(int x, int y, int z);
+    void showRoads(int x, int y);
+    bool buildRoad(int x, int y, int z, Player* player);
+
     // friend std::ostream& operator<<(std::ostream& os,Board& b);//print the graph
 
 private:
     std::vector<std::vector<Tile>> tiles;
-
+    Player *player = new Player("","\033[31m" );
     // helper function
     bool checkValidTile(size_t x, size_t y);
     void ReleventTiles(int, std::vector<std::pair<Tile,int>> &tiles);
@@ -49,9 +52,14 @@ private:
     void put3254(int x, int y,Vertex* v1, Vertex* v2);
     void fourToOne(int x, int y);
     void sixToTwo(int x, int y);
+    //for the roads
+    void connect5to2(int x, int y, Road* r1);
+    void connect1to4(int x, int y, Road* r1); 
+    void connect6to3(int x, int y, Road* r1);
     //for the hexagons
     void initializeVertices();
     void initializeTiles();
+    void initializeRoads();
     //didn't do yet
     std::vector<std::pair<int, int>> ports;
     std::pair<int, int> robberPosition;

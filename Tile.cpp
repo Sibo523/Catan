@@ -5,6 +5,7 @@ Tile::Tile(std::string tileType, int token)
     for (size_t i = 0; i < 6; i++)
     {
         adjacentVertices.push_back(NULL);
+        adjacentRoads.push_back(NULL);
     }
 }
 
@@ -71,7 +72,83 @@ void Tile::printSettelments()
     printWithColor(adjacentVertices[5]->isSettled(), adjacentVertices[5]->isSettled() ? adjacentVertices[5]->getOwnerPlayer().getName() : "", adjacentVertices[5]->isSettled()?adjacentVertices[5]->getOwnerPlayer().getColor():"",adjacentVertices[5]);
     std::cout << "-6" << std::endl; // 6
 }
-void Tile::addVertex(Vertex *v, size_t index)
+//Vertex related functions
+void Tile::printRoads()
+{
+    std::cout << "         ";
+    if (adjacentRoads[0] != NULL)
+    {
+        adjacentRoads[0]->print();
+        std::cout << "-1";
+    }
+    else
+    {
+        std::cout << "Not";
+    }
+    std::cout << std::endl; // 1
+
+    std::cout << "   ";
+    if (adjacentRoads[1] != NULL)
+    {
+        adjacentRoads[1]->print();
+        std::cout << "-2";
+    }
+    else
+    {
+        std::cout << "Not";
+    }
+    std::cout << "     "; // 2
+
+    std::cout << "   ";
+    if (adjacentRoads[2] != NULL)
+    {
+        adjacentRoads[2]->print();
+        std::cout << "-3";
+    }
+    else
+    {
+        std::cout << "Not";
+    }
+    std::cout << std::endl; // 3
+
+    std::cout << "         " << type + "-" + std::to_string(numberToken) << std::endl;
+
+    std::cout << "   ";
+    if (adjacentRoads[3] != NULL)
+    {
+        adjacentRoads[3]->print();
+        std::cout << "-4";
+    }
+    else
+    {
+        std::cout << "Not";
+    }
+    std::cout << "     "; // 4
+
+    std::cout << "   ";
+    if (adjacentRoads[4] != NULL)
+    {
+        adjacentRoads[4]->print();
+        std::cout << "-5";
+    }
+    else
+    {
+        std::cout << "Not";
+    }
+    std::cout << std::endl; // 5
+
+    std::cout << "         ";
+    if (adjacentRoads[5] != NULL)
+    {
+        adjacentRoads[5]->print();
+        std::cout << "-6";
+    }
+    else
+    {
+        std::cout << "Not";
+    }
+    std::cout << std::endl; // 6
+}void Tile::addVertex(Vertex *v, size_t index)
 {
     if (index >= 7 || index < 1)
     {
@@ -95,7 +172,22 @@ Vertex *Tile::getVertexPointer(size_t index)
     }
     return adjacentVertices[index - 1];
 }
-
+void Tile::addRoad(Road *r, size_t index)
+{
+    if (index >= 7 || index < 1)
+    {
+        throw std::invalid_argument("Index out of bounds");
+    }
+    adjacentRoads[index - 1] = r;
+}
+Road* Tile::getRoadPtr(size_t index)
+{
+    if (index >= 7 || index < 1)
+    {
+        throw std::invalid_argument("Index out of bounds");
+    }
+    return adjacentRoads[index - 1];
+}
 // ting means settlement
 bool Tile::hasting(int x)
 {

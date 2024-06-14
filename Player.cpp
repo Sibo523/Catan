@@ -37,8 +37,25 @@ bool Player::upgradeToCity()
     victoryPoints += 1;
     return true;
 }
+bool Player::buildRoad() {
+   
+   if(canBuildRoad())
+   {
+       resources["wood"] -= 1;
+       resources["brick"] -= 1;
+       return true;
+   }
+   else
+   {
+       std::cout<<"bro you broke";
+       return false;
+   }
+}
+
+
 void Player::addResource(std::string resource, int amount)
 {
+    std::cout<<"added "<<amount<<" "<<resource<<" to "<<name<<std::endl;
     resources[resource] += amount;
 }
 std::string Player::showResources()
@@ -67,20 +84,20 @@ bool Player::canUpgradeCity() const
 {
     return resources.at("ore") >= 3 && resources.at("wheat") >= 2;    
 }
-
-/*
-void Player::buildRoad(int x1, int y1, int x2, int y2) {
-    roads.push_back(Road(*this, {x1, y1}, {x2, y2}));
-    // Additional logic to handle resources and game state
-}
-void Player::tradeResources(Player& otherPlayer, std::map<std::string, int> offer, std::map<std::string, int> request) {
-    // Logic to trade resources between players
+bool Player::canBuildRoad() const
+{
+    return resources.at("wood") >= 1 && resources.at("brick") >= 1;
 }
 
-void Player::useDevelopmentCard(std::string cardType) {
-    // Logic to use a development card
-}
-*/
+
+// void Player::tradeResources(Player& otherPlayer, std::map<std::string, int> offer, std::map<std::string, int> request) {
+//     // Logic to trade resources between players
+// }
+
+// void Player::useDevelopmentCard(std::string cardType) {
+//     // Logic to use a development card
+// }
+
 // void Player::endTurn()
 // {
 //     // Logic to end the player's turn

@@ -12,15 +12,17 @@ int main() {
     GameManager gameManager({*player1,*player2});
     gameManager.startGame();
     std::cout<<"\n";
+    // gameManager.printBoard();
+    
     while (!gameManager.checkWinCondition()) {
-        gameManager.play();
+        // gameManager.play();
         break;
     }
-    gameManager.BuildSettlement(0,0,5,player1);
-    gameManager.BuildSettlement(0,0,4,player2);
-    gameManager.getSettlmets(0,0);
-    gameManager.getSettlmets(0,1);
-    gameManager.getSettlmets(1,1);
+    // gameManager.BuildSettlement(0,0,5,player1);
+    // gameManager.BuildSettlement(0,0,4,player2);
+    // gameManager.getSettlmets(0,0);
+    // gameManager.getSettlmets(0,1);
+    // gameManager.getSettlmets(1,1);
     delete player1;
     delete player2;
     return 0;

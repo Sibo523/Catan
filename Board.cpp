@@ -11,7 +11,8 @@ Board::Board()
 Board::~Board() // I wanted a simple implemantation of the destructor but I had to do this :(
 {
     std::unordered_set<Vertex *> deletedVertices;
-
+    std::unordered_set<Road *> deletedRoads;
+    delete player;
     for (size_t i = 0; i < (size_t)tiles.size(); i++)
     {
         for (size_t j = 0; j < (size_t)tiles[i].size(); j++)
@@ -19,18 +20,26 @@ Board::~Board() // I wanted a simple implemantation of the destructor but I had 
             for (size_t k = 1; k < 7; k++)
             {
                 Vertex *vertex = tiles[i][j].getVertexPointer(k);
+                Road *road = tiles[i][j].getRoadPtr(k);
 
-                if (vertex == NULL || deletedVertices.count(vertex))
+                if (road != nullptr && deletedRoads.count(road) == 0)
                 {
-                    continue;
+                    // if(road->getOwnerPtr()!=nullptr){
+                    //     delete road->getOwnerPtr();
+                    // }
+                    delete road;
+                    deletedRoads.insert(road);
                 }
-                if (vertex->isSettled())
+                if (vertex != nullptr && deletedVertices.count(vertex) == 0)
                 {
-                    delete vertex->set;
-                    // delete vertex->getSettlement();
+                    if (vertex->isSettled())
+                    {
+                        delete vertex->set;
+                    }
+                    delete vertex;
+
+                    deletedVertices.insert(vertex);
                 }
-                delete vertex;
-                deletedVertices.insert(vertex);
             }
         }
     }
@@ -55,16 +64,13 @@ void Board::generateResources(int diceRoll)
         {
             if (tile.getNumberToken() == diceRoll)
             {
-                // Give resources to players
-                // if there's a theif then I just don't do the rest and continue or something
                 for (int i = 1; i < 7; i++)
                 {
                     if (tile.getVertex(i).isSettled())
                     {
-                       tile.getVertex(i).getOwnerPlayer().addResource(tile.getResource(),tile.getVertex(i).getSettlement().getAmount());
+                        tile.getVertex(i).getOwnerPlayerPtr()->addResource(tile.getResource(), tile.getVertex(i).getSettlement().getAmount());
                     }
                 }
-                tile.getResource();
             }
         }
     }
@@ -99,7 +105,7 @@ bool Board::checkValidTile(size_t x, size_t y)
     return true;
 }
 
-void Board::ReleventTiles(int ver, std::vector<std::pair<Tile, int>> &relevantTiles)
+void Board::ReleventTiles(int ver, std::vector<std::pair<Tile, int>> &relevantTiles) // gives me all the one that contains the vertex
 {
     for (size_t i = 0; i < tiles.size(); i++)
     {
@@ -132,17 +138,19 @@ bool Board::buildSet(int x, int y, int z, Player *player)
             return false;
         }
     }
-    if (!player->buildSettlement()){
+    if (!player->buildSettlement())
+    {
         return false;
     }
     Settlement *s = new Settlement(player);
     tiles[x][y].getVertexPointer(z)->settle(s);
     return true;
 }
-bool manageProblems(Vertex* v, std::string name)
+bool manageProblems(Vertex *v, std::string name)
 {
-    if (v==nullptr){
-        std::cout<<"good luck";
+    if (v == nullptr)
+    {
+        std::cout << "good luck";
         return false;
     }
     if (!v->isSettled())
@@ -159,23 +167,23 @@ bool manageProblems(Vertex* v, std::string name)
 }
 bool Board::upgradeToCity(int x, int y, int z, Player *player)
 {
- 
-    Vertex* v = getVertex(x, y, z);
+
+    Vertex *v = getVertex(x, y, z);
 
     if (!manageProblems(v, player->getName()))
     {
         return false;
     }
-    if (!player->upgradeToCity()){
+    if (!player->upgradeToCity())
+    {
         return false;
     }
 
     v->getSettlementPtr()->upgradeToCity();
     return true;
-    
 }
 
-Vertex* Board::getVertex(int x, int y, int z)
+Vertex *Board::getVertex(int x, int y, int z)
 {
     if (!checkValidTile(x, y) || z < 1 || z > 6)
     {
@@ -297,19 +305,119 @@ void Board::initializeTiles()
         tiles.push_back(row);
     }
 }
+
+void Board::initializeRoads()
+{
+    // Logic to initialize roads
+    for (size_t i = 0; i < tiles[0].size(); i++)
+    {
+        Road *v = new Road(player);
+        Road *v1 = new Road(player);
+        tiles[0][i].addRoad(v, 1);
+        tiles[0][i].addRoad(v1, 6);
+    }
+    // middles
+    for (size_t i = 0; i < tiles.size(); i++)
+    {
+        Road *v1 = new Road(player);
+        tiles[i][0].addRoad(v1, 5);
+        Road *v2 = new Road(player);
+        tiles[i][0].addRoad(v2, 2);
+
+        for (size_t j = 0; j < tiles[i].size(); j++)
+        {
+            Road *v3 = new Road(player);
+            tiles[i][j].addRoad(v3, 2);
+            if (j != 0)
+            {
+                Road *v4 = tiles[i][j - 1].getRoadPtr(2);
+                connect5to2(i, j, v4);
+            }
+
+            // the floor
+            Road *v5 = new Road(player);
+            tiles[i][j].addRoad(v5, 3);
+            Road *v6 = new Road(player);
+            tiles[i][j].addRoad(v6, 4);
+            if ((i == 1 || i == 2) && (j == 0 || j == tiles[i].size() - 1))
+            {
+                if (j == 0) // ceiling edge cases
+                {
+                    Road *v7 = new Road(player);
+                    tiles[i][j].addRoad(v7, 6);
+                    Road *v8 = tiles[i - 1][j].getRoadPtr(4);
+                    connect1to4(i, j, v8);
+
+                }
+                else
+                {   
+                    Road *v7 = new Road(player);
+                    tiles[i][j].addRoad(v7, 1);
+                    Road *v8 = tiles[i - 1][j - 1].getRoadPtr(3);
+                    connect6to3(i, j, v8);
+                }
+            }
+            else //creating floor
+            {
+                if (i == 0)
+                    continue;
+                Road *v7;
+                Road *v8;
+                if (tiles[i].size() > tiles[i - 1].size())
+                {
+                    v7 = tiles[i - 1][j].getRoadPtr(4);
+                    v8 = tiles[i - 1][j - 1].getRoadPtr(3);
+                }
+                else
+                {
+                    v7 = tiles[i - 1][j + 1].getRoadPtr(4);
+                    v8 = tiles[i - 1][j].getRoadPtr(3);
+                }
+                //connect ceiling not edge cases
+                connect1to4(i, j, v7);
+                connect6to3(i, j, v8);
+            }
+        }
+    }
+    // bottom row
+    for (size_t i = 0; i < tiles[4].size(); i++)
+    {
+        Road *v = new Road(player);
+        Road *v1 = new Road(player);
+        tiles[4][i].addRoad(v, 3);
+        tiles[4][i].addRoad(v1, 4);
+    }
+}
+void Board::connect5to2(int x, int y, Road *r1)
+{
+    tiles[x][y].addRoad(r1, 5);
+}
+void Board::connect1to4(int x, int y, Road *r1)
+{
+    tiles[x][y].addRoad(r1, 1);
+}
+void Board::connect6to3(int x, int y, Road *r1)
+{
+    tiles[x][y].addRoad(r1, 6);
+}
+
 void Board::setupBoard()
 { // generate the board
-    // Logic to setup the board
     // srand(time(0)); // to make it randomized every time
+
     // Initialize tiles
     initializeTiles();
+
     // Initialize vertices
     initializeVertices();
+
+    // Initialize roads
+    initializeRoads();
 }
 
 void Board::printBoard()
 {
-    std::vector<std::string> resources = {"           ", "     ", "", "     ", "           "};
+    std::vector<std::string> resources = {"            ", "      ", "", "      ", "            "};
 
     // Print the top row of vertex owners
     std::cout << "                ";
@@ -318,10 +426,19 @@ void Board::printBoard()
         std::cout << WHITE << std::setw(9) << tiles[0][i].getVertex(1).getOwner() << RESET << "  ";
     }
     std::cout << std::endl;
-
+    
     // Print the rest of the board
-    for (size_t i = 0; i < tiles.size(); ++i)
+    std::vector<std::string> offset = {"             ", "       ", " ", "       ", "             "};
+    for (size_t i = 0; i < tiles.size(); i++)
     {
+        //print middle part of the roads
+        std::cout << offset[i]+"       ";
+        for (size_t j = 0; j < tiles[i].size(); j++)
+        {
+            std::cout << tiles[i][j].getRoadPtr(6)->getOwner().getColor()  << "/" << RESET << "";
+            std::cout << tiles[i][j].getRoadPtr(1)->getOwner().getColor() << std::setw(9) << "\\" << RESET << " ";
+        }
+        std::cout << std::endl;
         for (int k = 0; k < 2; ++k)
         {
             std::cout << resources[i];
@@ -348,6 +465,7 @@ void Board::printBoard()
                 {
                     // Assuming resources and number tokens are strings for simplicity
                     std::string resource = tiles[i][j].getResource();
+                    std::cout << tiles[i][j].getRoadPtr(5)->getOwner().getColor() << "|" << RESET << "";
 
                     std::string numberToken = std::to_string(tiles[i][j].getNumberToken());
 
@@ -368,34 +486,42 @@ void Board::printBoard()
                     else
                         color = WHITE;
 
-                    std::cout << color << std::setw(8) << resource + "-" + numberToken << RESET << "   ";
+                    std::cout << color <<std::setw(8) << resource + "-" + numberToken << RESET << "  ";
                 }
+                std::cout << tiles[i][tiles[i].size() - 1].getRoadPtr(2)->getOwner().getColor() << "|" << RESET << "";
+
                 std::cout << std::endl;
             }
         }
     }
 
+    std::cout << "                    ";
+    for (size_t i = 0; i < tiles[4].size(); ++i)
+    {
+        std::cout << std::setw(2) << tiles[4][i].getRoadPtr(4)->getOwner().getColor() << "\\" << RESET << "";
+        std::cout << std::setw(13) << tiles[4][i].getRoadPtr(3)->getOwner().getColor() << "/" << RESET << " ";
+    }
     // Print the end of the board
-    std::cout << "                ";
+    std::cout << std::endl
+              << "                ";
     for (size_t i = 0; i < tiles[4].size(); ++i)
     {
         std::cout << WHITE << std::setw(9) << tiles[4][i].getVertex(6).getOwner() << RESET << "  ";
     }
-    // for(int i =0; i < tiles.size(); i++)
-    //     {
-    //         for(int j = 0; j <tiles[i].size(); j++)
-    //         {
-    //             for(int k = 1; k < 7; k++)
-    //             {
-    //                 if(tiles[i][j].getVertex(k).isSettled() )
-    //                 {
-    //                     //std::cout<< "I guess it works"<< k << std::endl;
-    //                 }
-    //             }
-    //         }
-    //     }
 }
+bool Board::buildRoad(int x, int y, int z, Player *player)
+{
+    if (tiles[x][y].getRoadPtr(z)->getOwner().getName() != "")
+    {
+        return false;
+    }
 
+    if (!player->buildRoad())
+    {
+        return false;
+    }
+    return true;
+}
 void Board::getTile(const size_t x, const size_t y)
 {
     tiles[x][y].print();
@@ -406,13 +532,9 @@ void Board::printTileSet(int x, int y)
     tiles[x][y].printSettelments();
     std::cout << std::endl;
 }
+void Board::showRoads(int x, int y)
+{
+    tiles[x][y].printRoads();
+    std::cout << std::endl;
+}
 
-// std::ostream& operator<<(std::ostream& os, const Board& board) {
-//     for (const auto& row : board.tiles) {
-//         for (const auto& tile : row) {
-//             os << tile.getResource() << " ";
-//         }
-//         os << "\n";
-//     }
-//     return os;
-// }

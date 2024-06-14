@@ -10,6 +10,7 @@ public:
     ~Settlement();
     void upgradeToCity(); //will change from 1 to 2
     Player getOwner() const;
+    Player* getOwnerPtr();
     int getAmount() const; // if there's two then it's a city
 private:
     int amount; //or 1 or 2

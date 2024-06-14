@@ -1,7 +1,7 @@
 # Makefile
 CXX = clang++
 CXXFLAGS = -std=c++11 -Wall -Wextra -O2 -g
-OBJS = catan.o Board.o GameManager.o Tile.o Player.o Vertex.o  Settlement.o
+OBJS = catan.o Board.o GameManager.o Tile.o Player.o Vertex.o  Settlement.o Road.o 
 
 all: catan
 

@@ -24,6 +24,14 @@ Player Vertex::getOwnerPlayer()
     }
     return set->getOwner();
 }
+Player* Vertex::getOwnerPlayerPtr()
+{
+    if (set == nullptr)
+    {
+        throw std::invalid_argument("No settlement");
+    }
+    return set->getOwnerPtr();
+}
 bool Vertex::isSettled()
 {
     return flag;

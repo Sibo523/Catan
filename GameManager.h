@@ -9,7 +9,7 @@ class GameManager {
 public:
     // GameManager(std::vector<Player> players);
     GameManager(std::vector<Player> gamePlayers);
-    // GameManager();
+    ~GameManager();
     void startGame();
     void endGame();
     void nextTurn();
@@ -21,6 +21,8 @@ public:
     bool upgradeToCity(int x, int y, int z);
     Player* getPlayer();
     void play();
+    bool buildRoad(int, int ,int );
+    void showRoads(int,int);
 private:
     std::vector<Player> players;
     Board board;

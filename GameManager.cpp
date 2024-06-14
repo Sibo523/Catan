@@ -4,7 +4,9 @@ GameManager::GameManager(std::vector<Player> gamePlayers)
     : players(gamePlayers), currentTurn(0), gameState("not started") {}
 
 // GameManager::GameManager() :currentTurn(0), gameState("not started") {}
-
+GameManager::~GameManager(){
+    
+}
 void GameManager::startGame()
 {
     gameState = "started";
@@ -35,7 +37,6 @@ void GameManager::play()
         std::cout << "6. next turn\n";
         std::cout << "7. print board\n";
         std::cout << "8. show resources\n";
-
         std::cout << "Enter your choice (1-8): ";
         std::cin >> choice;
         int x,y,z;
@@ -53,7 +54,10 @@ void GameManager::play()
             // getPlayer().buyDevelopmentCard();
             break;
         case 3:
-            // buildRoad();
+            std::cin>>x>>y>>z;
+           // buildRoad();
+           std::cout<<( buildRoad(x,y,z)? "Road built successfully" : "Road build failed")<<std::endl;
+            showRoads(x,y);
             break;
         case 4:
             std::cout << "upgrading the settlment in x,y,z , z is between 1 to 6" << std::endl;
@@ -105,10 +109,19 @@ bool GameManager::upgradeToCity(int x, int y, int z)
 {
     return board.upgradeToCity(x, y, z, getPlayer());
 }
+bool GameManager::buildRoad(int x, int y, int z)
+{
+    return board.buildRoad(x, y, z, getPlayer());
+}
 void GameManager::printBoard()
 {
     board.printBoard();
 }
+void GameManager::showRoads(int x, int y)
+{
+    board.showRoads(x, y);
+}
+
 bool GameManager::checkWinCondition()
 {
     // Logic to check if a player has won the game
