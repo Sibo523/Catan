@@ -10,6 +10,7 @@ public:
     Player getOwner() const;
     Player* getOwnerPtr();
     void print();
+    void setOwner(Player* newOwner);
 private:
     Player* owner;
 };

@@ -15,7 +15,7 @@ int main() {
     // gameManager.printBoard();
     
     while (!gameManager.checkWinCondition()) {
-        // gameManager.play();
+        gameManager.play();
         break;
     }
     // gameManager.BuildSettlement(0,0,5,player1);

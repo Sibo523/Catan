@@ -347,17 +347,16 @@ void Board::initializeRoads()
                     tiles[i][j].addRoad(v7, 6);
                     Road *v8 = tiles[i - 1][j].getRoadPtr(4);
                     connect1to4(i, j, v8);
-
                 }
                 else
-                {   
+                {
                     Road *v7 = new Road(player);
                     tiles[i][j].addRoad(v7, 1);
                     Road *v8 = tiles[i - 1][j - 1].getRoadPtr(3);
                     connect6to3(i, j, v8);
                 }
             }
-            else //creating floor
+            else // creating floor
             {
                 if (i == 0)
                     continue;
@@ -373,7 +372,7 @@ void Board::initializeRoads()
                     v7 = tiles[i - 1][j + 1].getRoadPtr(4);
                     v8 = tiles[i - 1][j].getRoadPtr(3);
                 }
-                //connect ceiling not edge cases
+                // connect ceiling not edge cases
                 connect1to4(i, j, v7);
                 connect6to3(i, j, v8);
             }
@@ -420,41 +419,61 @@ void Board::printBoard()
     std::vector<std::string> resources = {"            ", "      ", "", "      ", "            "};
 
     // Print the top row of vertex owners
-    std::cout << "                ";
+    std::cout << "                   ";
     for (size_t i = 0; i < tiles[0].size(); ++i)
     {
-        std::cout << WHITE << std::setw(9) << tiles[0][i].getVertex(1).getOwner() << RESET << "  ";
+        std::cout << (tiles[0][i].getVertex(1).isSettled()? tiles[0][i].getVertex(1).getOwnerPlayer().getColor():RESET)<< std::setw(9) << "__" + tiles[0][i].getVertex(1).getOwner() + "__ " << RESET << "  ";
     }
     std::cout << std::endl;
-    
+
     // Print the rest of the board
     std::vector<std::string> offset = {"             ", "       ", " ", "       ", "             "};
     for (size_t i = 0; i < tiles.size(); i++)
     {
-        //print middle part of the roads
-        std::cout << offset[i]+"       ";
+        // print middle part of the roads
+        if (!(i == 3 || i == 4))
+        {
+            std::cout << offset[i] + "       ";
+        }
+        else if (i == 3){
+            std::cout << "    " ;
+        }
+        else{
+            std::cout << "          ";
+        }
+        
+        if (i == 3 || i == 4)
+        {
+            std::cout <<tiles[i - 1][0].getRoadPtr(4)->getOwner().getColor()  <<  std::setw(9)<<"\\" << RESET << " ";
+        }
         for (size_t j = 0; j < tiles[i].size(); j++)
         {
-            std::cout << tiles[i][j].getRoadPtr(6)->getOwner().getColor()  << "/" << RESET << "";
+            std::cout << tiles[i][j].getRoadPtr(6)->getOwner().getColor() << "/" << RESET << "";
             std::cout << tiles[i][j].getRoadPtr(1)->getOwner().getColor() << std::setw(9) << "\\" << RESET << " ";
+        }
+        if (i == 3 || i == 4)
+        {
+            std::cout << tiles[i - 1][tiles[i - 1].size() - 1].getRoadPtr(3)->getOwner().getColor() << "/" << RESET << "";
         }
         std::cout << std::endl;
         for (int k = 0; k < 2; ++k)
         {
             std::cout << resources[i];
-
             if (k == 0)
             {
-                std::cout << WHITE << std::setw(8) << tiles[i][0].getVertex(2).getOwner() << RESET << "  ";
+                std::cout << (tiles[i][0].getVertex(2).isSettled()? tiles[i][0].getVertex(2).getOwnerPlayer().getColor():RESET) \
+                << std::setw(8) << tiles[i][0].getVertex(2).getOwner() << RESET << "  ";
             }
             else
             {
-                std::cout << WHITE << std::setw(8) << tiles[i][0].getVertex(4).getOwner() << RESET << "  ";
+                std::cout << (tiles[i][0].getVertex(4).isSettled()? tiles[i][0].getVertex(4).getOwnerPlayer().getColor():RESET) \
+                << "  " << std::setw(8) << "__" + tiles[i][0].getVertex(4).getOwner() + "__" << RESET << "  ";
             }
 
             for (size_t j = 0; j < tiles[i].size(); ++j)
             {
-                std::cout << WHITE << std::setw(9) << tiles[i][j].getVertex(k == 0 ? 3 : 5).getOwner() << RESET << "  ";
+                std::cout << (tiles[i][j].getVertex(k == 0 ? 3 : 5).isSettled()? tiles[i][j].getVertex(k == 0 ? 3 : 5).getOwnerPlayer().getColor():RESET)\
+                << "" << std::setw(9) << (k == 0 ? "" : "__") + tiles[i][j].getVertex(k == 0 ? 3 : 5).getOwner() + (k == 0 ? "" : "__") << RESET << "  ";
             }
             std::cout << std::endl;
 
@@ -486,7 +505,7 @@ void Board::printBoard()
                     else
                         color = WHITE;
 
-                    std::cout << color <<std::setw(8) << resource + "-" + numberToken << RESET << "  ";
+                    std::cout << color << std::setw(8) << resource + "-" + numberToken << RESET << "  ";
                 }
                 std::cout << tiles[i][tiles[i].size() - 1].getRoadPtr(2)->getOwner().getColor() << "|" << RESET << "";
 
@@ -495,20 +514,22 @@ void Board::printBoard()
         }
     }
 
-    std::cout << "                    ";
+    std::cout << "                   ";
     for (size_t i = 0; i < tiles[4].size(); ++i)
     {
-        std::cout << std::setw(2) << tiles[4][i].getRoadPtr(4)->getOwner().getColor() << "\\" << RESET << "";
-        std::cout << std::setw(13) << tiles[4][i].getRoadPtr(3)->getOwner().getColor() << "/" << RESET << " ";
+        std::cout << std::setw(2) << tiles[4][i].getRoadPtr(4)->getOwner().getColor() << "\\" << RESET << " ";
+        std::cout << std::setw(2) << tiles[4][i].getRoadPtr(3)->getOwner().getColor() << "/" << RESET << "     ";
     }
     // Print the end of the board
     std::cout << std::endl
               << "                ";
     for (size_t i = 0; i < tiles[4].size(); ++i)
     {
-        std::cout << WHITE << std::setw(9) << tiles[4][i].getVertex(6).getOwner() << RESET << "  ";
+        std::cout << (tiles[4][i].getVertex(6).isSettled()? tiles[4][i].getVertex(6).getOwnerPlayer().getColor():RESET) \
+        << std::setw(9) << tiles[4][i].getVertex(6).getOwner() << RESET << "   ";
     }
-}
+} // enf of function
+
 bool Board::buildRoad(int x, int y, int z, Player *player)
 {
     if (tiles[x][y].getRoadPtr(z)->getOwner().getName() != "")
@@ -520,6 +541,7 @@ bool Board::buildRoad(int x, int y, int z, Player *player)
     {
         return false;
     }
+    tiles[x][y].getRoadPtr(z)->setOwner(player);
     return true;
 }
 void Board::getTile(const size_t x, const size_t y)
@@ -537,4 +559,3 @@ void Board::showRoads(int x, int y)
     tiles[x][y].printRoads();
     std::cout << std::endl;
 }
-

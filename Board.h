@@ -44,7 +44,7 @@ public:
 
 private:
     std::vector<std::vector<Tile>> tiles;
-    Player *player = new Player("","\033[31m" );
+    Player *player = new Player("","" );
     // helper function
     bool checkValidTile(size_t x, size_t y);
     void ReleventTiles(int, std::vector<std::pair<Tile,int>> &tiles);
