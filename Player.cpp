@@ -4,7 +4,7 @@ Player::Player(std::string playerName, std::string color) // didn't do decunstor
     : color(color), name(playerName), victoryPoints(0)
 {
     // Initialize resources to 0
-    resources = {{"wood", 10}, {"brick", 5}, {"sheep", 5}, {"wheat", 5}, {"ore", 5}}; // aight
+    resources = {{"wood", 4}, {"brick", 4}, {"sheep", 2}, {"wheat", 2}, {"ore", 0}}; // aight
 }
 
 bool Player::buildSettlement()

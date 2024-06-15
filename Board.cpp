@@ -257,11 +257,11 @@ void Board::fourToOne(int i, int j)
         // std::cout<<tiles[i-1].size()<<std::endl;
         if ((size_t)j == tiles[i - 1].size())
         { // if I am in the end I have to go back by one
-            tiles[i][j].addVertex(tiles[i - 1][j - 1].getVertexPointer(5), 1);
+            tiles[i][j].addVertex(tiles[i - 1][j - 1].getVertexPointer(4), 1); //no way I found this bug so fast 
         }
         else
         {
-            tiles[i][j].addVertex(tiles[i - 1][j].getVertexPointer(4), 1);
+            tiles[i][j].addVertex(tiles[i - 1][j].getVertexPointer(5), 1);
         }
     }
 }
@@ -443,31 +443,31 @@ void Board::printBoard()
         {
             std::cout <<tiles[i - 1][0].getRoadPtr(4)->getOwner().getColor()  <<  std::setw(9)<<"\\" << RESET << " ";
         }
-        for (size_t j = 0; j < tiles[i].size(); j++)
+        for (size_t j = 0; j < tiles[i].size(); j++) //road
         {
             std::cout << tiles[i][j].getRoadPtr(6)->getOwner().getColor() << "/" << RESET << "";
             std::cout << tiles[i][j].getRoadPtr(1)->getOwner().getColor() << std::setw(9) << "\\" << RESET << " ";
         }
         if (i == 3 || i == 4)
-        {
+        { //road
             std::cout << tiles[i - 1][tiles[i - 1].size() - 1].getRoadPtr(3)->getOwner().getColor() << "/" << RESET << "";
         }
         std::cout << std::endl;
         for (int k = 0; k < 2; ++k)
         {
             std::cout << resources[i];
-            if (k == 0)
+            if (k == 0)//Vertex
             {
                 std::cout << (tiles[i][0].getVertex(2).isSettled()? tiles[i][0].getVertex(2).getOwnerPlayer().getColor():RESET) \
                 << std::setw(8) << tiles[i][0].getVertex(2).getOwner() << RESET << "  ";
             }
-            else
+            else//vertex
             {
                 std::cout << (tiles[i][0].getVertex(4).isSettled()? tiles[i][0].getVertex(4).getOwnerPlayer().getColor():RESET) \
                 << "  " << std::setw(8) << "__" + tiles[i][0].getVertex(4).getOwner() + "__" << RESET << "  ";
             }
-
-            for (size_t j = 0; j < tiles[i].size(); ++j)
+            //Road
+            for (size_t j = 0; j < tiles[i].size(); ++j) //vertex
             {
                 std::cout << (tiles[i][j].getVertex(k == 0 ? 3 : 5).isSettled()? tiles[i][j].getVertex(k == 0 ? 3 : 5).getOwnerPlayer().getColor():RESET)\
                 << "" << std::setw(9) << (k == 0 ? "" : "__") + tiles[i][j].getVertex(k == 0 ? 3 : 5).getOwner() + (k == 0 ? "" : "__") << RESET << "  ";

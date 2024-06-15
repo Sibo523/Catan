@@ -21,10 +21,11 @@ public:
     bool upgradeToCity(int x, int y, int z);
     Player* getPlayer();
     void play();
-    bool buildRoad(int, int ,int );
+    bool buildRoad(int, int ,int,Player* player);
     void showRoads(int,int);
 
 private:
+    void firstRound();
     std::vector<Player> players;
     Board board;
     int currentTurn;
