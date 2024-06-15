@@ -23,11 +23,13 @@ public:
     void play();
     bool buildRoad(int, int ,int );
     void showRoads(int,int);
+
 private:
     std::vector<Player> players;
     Board board;
     int currentTurn;
     std::string gameState;
+    bool tradeWithOtherPlayers(size_t other,std::map<std::string, int> resourcesGiven,std::map<std::string, int> resourcesReceived);
 };
 
 #endif // GAMEMANAGER_H

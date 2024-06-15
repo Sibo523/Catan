@@ -39,7 +39,7 @@ public:
     Vertex* getVertex(int x, int y, int z);
     void showRoads(int x, int y);
     bool buildRoad(int x, int y, int z, Player* player);
-
+    bool tradeResources(Player& me,Player& other,std::map<std::string, int> offer, std::map<std::string, int> request);
     // friend std::ostream& operator<<(std::ostream& os,Board& b);//print the graph
 
 private:

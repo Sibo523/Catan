@@ -559,3 +559,23 @@ void Board::showRoads(int x, int y)
     tiles[x][y].printRoads();
     std::cout << std::endl;
 }
+bool Board::tradeResources(Player& me, Player& other, std::map<std::string, int> offer, std::map<std::string, int> request) {
+    // Check if 'me' has enough resources to offer
+    if (!me.hasResources(offer)) {
+        return false;
+    }
+
+    // Check if 'other' has enough resources to meet the request
+    if (!other.hasResources(request)) {
+        return false;
+    }
+
+    // Perform the trade
+    me.subtractResources(offer);
+    other.addResources(offer);
+
+    other.subtractResources(request);
+    me.addResources(request);
+
+    return true;
+}

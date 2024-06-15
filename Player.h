@@ -26,6 +26,10 @@ public:
     std::string getColor() const;
     void setColor(std::string color);
     int getVictoryPoints() const;
+    void subtractResources(const std::map<std::string, int> &subtracted);
+    void addResources(const std::map<std::string, int> &additional);
+    bool hasResources(const std::map<std::string, int> &required) const;
+    
 private:
     bool canBuildRoad() const;
     std::string color;

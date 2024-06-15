@@ -1,5 +1,7 @@
 #include "GameManager.h"
-
+#include <iostream>
+#include <vector>
+#include <map>
 GameManager::GameManager(std::vector<Player> gamePlayers)
     : players(gamePlayers), currentTurn(0), gameState("not started") {}
 
@@ -40,6 +42,15 @@ void GameManager::play()
         std::cout << "Enter your choice (1-8): ";
         std::cin >> choice;
         int x,y,z;
+
+        int player = 0,wood_r = 0 ,brick_r = 0 ,sheep_r = 0 ,wheat_r = 0 ,ore_r = 0;
+        int wood_g = 0,brick_g = 0,sheep_g = 0,wheat_g = 0,ore_g = 0 ;
+        // int player,wood_r,brick_r,sheep_r,wheat_r,ore_r;
+        // int wood_g,brick_g,sheep_g,wheat_g,ore_g;
+
+        std::map<std::string, int> give;
+        std::map<std::string, int> get;
+        std::string input;
         switch (choice)
         {
         case 1:
@@ -55,8 +66,7 @@ void GameManager::play()
             break;
         case 3:
             std::cin>>x>>y>>z;
-           // buildRoad();
-           std::cout<<( buildRoad(x,y,z)? "Road built successfully" : "Road build failed")<<std::endl;
+            std::cout<<( buildRoad(x,y,z)? "Road built successfully" : "Road build failed")<<std::endl;
             showRoads(x,y);
             break;
         case 4:
@@ -65,8 +75,28 @@ void GameManager::play()
             std::cout<<(upgradeToCity(x,y,z) ? "City upgraded successfully" : "City upgrade failed")<<std::endl;
             getSettlmets(x,y);
             break;
-        case 5:
-            // tradeWithOtherPlayers();
+        case 5: // need to check why I can intilize things in switch case :()
+            std::cout <<"Trading!\n";
+            std::cout <<"who do you want to trade with? ";
+            std::cin>>player;
+            std::cout <<"what do you want to give? \n wood brick sheep wheat ore\n";
+            std::cin>>wood_g>>brick_g>>sheep_g>>wheat_g>>ore_g;
+            give["wood"] = wood_g;
+            give["brick"] = brick_g;
+            give["sheep"] = sheep_g;
+            give["wheat"] = wheat_g;
+            give["ore"] = ore_g;
+            std::cout <<"what do you want to get? \n wood brick sheep wheat ore\n";
+            std::cin>>wood_r>>brick_r>>sheep_r>>wheat_r>>ore_r;
+            get["wood"] = wood_r;
+            get["brick"] = brick_r;
+            get["sheep"] = sheep_r;
+            get["wheat"] = wheat_r;
+            get["ore"] = ore_r;
+            std::cout<<"second player needs to confirm the trade(y)\n"; //get means request :)
+            if (std::cin>>input && input == "y" ){
+                std::cout<< (tradeWithOtherPlayers(player,give,get) ? "Trade successful" : "Trade failed")<<std::endl;
+            }
             break;
         case 6:
             nextTurn();
@@ -81,13 +111,12 @@ void GameManager::play()
             std::cout << "Invalid choice. Please enter a number from 1 to 6." << std::endl;
         }
 
-    } while (choice != 6);
+    } while (choice != 6); // I get 6 next to the next player and finish the while loop
 }
 
 void GameManager::nextTurn()
 {
     currentTurn = (currentTurn + 1) % players.size();
-    // Additional logic to handle turn transition
 }
 void GameManager::get(size_t row, size_t col)
 {
@@ -121,7 +150,10 @@ void GameManager::showRoads(int x, int y)
 {
     board.showRoads(x, y);
 }
-
+bool GameManager::tradeWithOtherPlayers(size_t other,std::map<std::string, int> give,std::map<std::string, int> get)
+{
+    return board.tradeResources(*getPlayer(), players[other], give, get);
+}
 bool GameManager::checkWinCondition()
 {
     // Logic to check if a player has won the game
