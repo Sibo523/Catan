@@ -43,6 +43,8 @@ Board::~Board() // I wanted a simple implemantation of the destructor but I had 
             }
         }
     }
+    
+
 }
 
 void Board::placeRobber(int x, int y)
@@ -321,8 +323,8 @@ void Board::initializeRoads()
     {
         Road *v1 = new Road(player);
         tiles[i][0].addRoad(v1, 5);
-        Road *v2 = new Road(player);
-        tiles[i][0].addRoad(v2, 2);
+        //Road *v2 = new Road(player);
+        //tiles[i][0].addRoad(v2, 2);
 
         for (size_t j = 0; j < tiles[i].size(); j++)
         {
@@ -334,59 +336,54 @@ void Board::initializeRoads()
                 connect5to2(i, j, v4);
             }
 
-            // the floor
-            Road *v5 = new Road(player);
-            tiles[i][j].addRoad(v5, 3);
-            Road *v6 = new Road(player);
-            tiles[i][j].addRoad(v6, 4);
-            if ((i == 1 || i == 2) && (j == 0 || j == tiles[i].size() - 1))
-            {
-                if (j == 0) // ceiling edge cases
-                {
-                    Road *v7 = new Road(player);
-                    tiles[i][j].addRoad(v7, 6);
-                    Road *v8 = tiles[i - 1][j].getRoadPtr(4);
-                    connect1to4(i, j, v8);
-                }
-                else
-                {
-                    Road *v7 = new Road(player);
-                    tiles[i][j].addRoad(v7, 1);
-                    Road *v8 = tiles[i - 1][j - 1].getRoadPtr(3);
-                    connect6to3(i, j, v8);
-                }
-            }
-            else // creating floor
-            {
-                if (i == 0)
-                    continue;
-                Road *v7;
-                Road *v8;
-                if (tiles[i].size() > tiles[i - 1].size())
-                {
-                    v7 = tiles[i - 1][j].getRoadPtr(4);
-                    v8 = tiles[i - 1][j - 1].getRoadPtr(3);
-                }
-                else
-                {
-                    v7 = tiles[i - 1][j + 1].getRoadPtr(4);
-                    v8 = tiles[i - 1][j].getRoadPtr(3);
-                }
-                // connect ceiling not edge cases
-                connect1to4(i, j, v7);
-                connect6to3(i, j, v8);
-            }
+             // the floor
+             Road *v5 = new Road(player);
+             tiles[i][j].addRoad(v5, 3);
+             Road *v6 = new Road(player);
+             tiles[i][j].addRoad(v6, 4);
+                if ((i == 1 || i == 2) && (j == 0 || j == tiles[i].size() - 1))
+    {
+        if (j == 0) // ceiling edge cases
+        {
+            Road *v7 = new Road(player);
+            tiles[i][j].addRoad(v7, 6);
+            Road *v8 = tiles[i - 1][j].getRoadPtr(4);
+            connect1to4(i, j, v8);
+        }
+        else
+        {
+            Road *v7 = new Road(player);
+            tiles[i][j].addRoad(v7, 1);
+            Road *v8 = tiles[i - 1][j - 1].getRoadPtr(3);
+            connect6to3(i, j, v8);
         }
     }
-    // bottom row
-    for (size_t i = 0; i < tiles[4].size(); i++)
+    else // creating floor
     {
-        Road *v = new Road(player);
-        Road *v1 = new Road(player);
-        tiles[4][i].addRoad(v, 3);
-        tiles[4][i].addRoad(v1, 4);
+        if (i == 0)
+            continue;
+        Road *v7;
+        Road *v8;
+        if (tiles[i].size() > tiles[i - 1].size())
+        {
+            v7 = tiles[i - 1][j].getRoadPtr(4);
+            v8 = tiles[i - 1][j - 1].getRoadPtr(3);
+        }
+        else
+        {
+            v7 = tiles[i - 1][j + 1].getRoadPtr(4);
+            v8 = tiles[i - 1][j].getRoadPtr(3);
+        }
+        // connect ceiling not edge cases
+        connect1to4(i, j, v7);
+        connect6to3(i, j, v8);
     }
+
+        }
+    }
+    
 }
+
 void Board::connect5to2(int x, int y, Road *r1)
 {
     tiles[x][y].addRoad(r1, 5);

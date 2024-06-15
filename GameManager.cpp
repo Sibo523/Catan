@@ -12,7 +12,7 @@ GameManager::~GameManager(){
 void GameManager::startGame()
 {
     gameState = "started";
-    board.printBoard();
+    // board.printBoard();
 }
 
 void GameManager::endGame()
@@ -31,22 +31,20 @@ void GameManager::play()
     do
     {
         std::cout << "\nChoose an action:\n";
-        std::cout << "1. Build Settlement\n";
-        std::cout << "2. Buy Development Card\n";
-        std::cout << "3. Build Road\n";
-        std::cout << "4. Upgrade Settlement to City\n";
-        std::cout << "5. Trade with Other Players\n";
-        std::cout << "6. next turn\n";
-        std::cout << "7. print board\n";
-        std::cout << "8. show resources\n";
+        std::cout << "1. Build Settlement\n"; // did
+        std::cout << "2. Buy Development Card\n"; //need to do
+        std::cout << "3. Build Road\n"; //did
+        std::cout << "4. Upgrade Settlement to City\n"; //did
+        std::cout << "5. Trade with Other Players\n"; //did 
+        std::cout << "6. next turn\n"; //did
+        std::cout << "7. print board\n"; //did but I want to change something related the set and city
+        std::cout << "8. show resources\n"; //dids
         std::cout << "Enter your choice (1-8): ";
         std::cin >> choice;
         int x,y,z;
 
         int player = 0,wood_r = 0 ,brick_r = 0 ,sheep_r = 0 ,wheat_r = 0 ,ore_r = 0;
         int wood_g = 0,brick_g = 0,sheep_g = 0,wheat_g = 0,ore_g = 0 ;
-        // int player,wood_r,brick_r,sheep_r,wheat_r,ore_r;
-        // int wood_g,brick_g,sheep_g,wheat_g,ore_g;
 
         std::map<std::string, int> give;
         std::map<std::string, int> get;
