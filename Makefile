@@ -9,8 +9,17 @@ run: all
 	./!run_game.sh
 
 valgrind: all
-	chmod +x !run_game.sh
-	./!run_game.sh 
+	valgrind --leak-check=full --track-origins=yes echo "1 2 3\
+		1 2 2\
+		2 2 2\
+		2 2 6\
+		0 0 1\
+		0 0 1\
+		4 0 1\
+		4 0 1\
+		7\
+		6"| ./catan
+
 catan: $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 

@@ -31,11 +31,11 @@ void Tile::print()
     std::cout << "   " + adjacentVertices[4]->getOwner() << "-5" << std::endl;       // 5
     std::cout << "         " + adjacentVertices[5]->getOwner() << "-6" << std::endl; // 6
 }
-void printWithColor(bool isSettled, const std::string &playerName,std::string color,Vertex* v) 
+void printWithColor(bool isSettled, const std::string &playerName, std::string color, Vertex *v)
 {
     if (isSettled)
     {
-        std::cout << color << playerName <<"-"<<v->getSettlement().getAmount()<< RESET_TEXT;
+        std::cout << color << playerName << "-" << v->getSettlement().getAmount() << RESET_TEXT;
     }
     else
     {
@@ -46,33 +46,33 @@ void Tile::printSettelments()
 {
 
     std::cout << "         ";
-    printWithColor(adjacentVertices[0]->isSettled(), adjacentVertices[0]->isSettled() ? adjacentVertices[0]->getOwnerPlayer().getName() : "",adjacentVertices[0]->isSettled()? adjacentVertices[0]->getOwnerPlayer().getColor():"",\
-    adjacentVertices[0]);
+    printWithColor(adjacentVertices[0]->isSettled(), adjacentVertices[0]->isSettled() ? adjacentVertices[0]->getOwnerPlayer().getName() : "", adjacentVertices[0]->isSettled() ? adjacentVertices[0]->getOwnerPlayer().getColor() : "",
+                   adjacentVertices[0]);
     std::cout << "-1" << std::endl; // 1
 
     std::cout << "   ";
-    printWithColor(adjacentVertices[1]->isSettled(), adjacentVertices[1]->isSettled() ? adjacentVertices[1]->getOwnerPlayer().getName() : "",adjacentVertices[1]->isSettled()? adjacentVertices[1]->getOwnerPlayer().getColor():"",adjacentVertices[1]);
+    printWithColor(adjacentVertices[1]->isSettled(), adjacentVertices[1]->isSettled() ? adjacentVertices[1]->getOwnerPlayer().getName() : "", adjacentVertices[1]->isSettled() ? adjacentVertices[1]->getOwnerPlayer().getColor() : "", adjacentVertices[1]);
     std::cout << "-2     "; // 2
 
     std::cout << "   ";
-    printWithColor(adjacentVertices[2]->isSettled(), adjacentVertices[2]->isSettled() ? adjacentVertices[2]->getOwnerPlayer().getName() : "", adjacentVertices[2]->isSettled()?adjacentVertices[2]->getOwnerPlayer().getColor():"",adjacentVertices[2]);
+    printWithColor(adjacentVertices[2]->isSettled(), adjacentVertices[2]->isSettled() ? adjacentVertices[2]->getOwnerPlayer().getName() : "", adjacentVertices[2]->isSettled() ? adjacentVertices[2]->getOwnerPlayer().getColor() : "", adjacentVertices[2]);
     std::cout << "-3" << std::endl; // 3
-    
+
     std::cout << "         " << type + "-" + std::to_string(numberToken) << std::endl;
 
     std::cout << "   ";
-    printWithColor(adjacentVertices[3]->isSettled(), adjacentVertices[3]->isSettled() ? adjacentVertices[3]->getOwnerPlayer().getName() : "", adjacentVertices[3]->isSettled()?adjacentVertices[3]->getOwnerPlayer().getColor():"",adjacentVertices[3]);
+    printWithColor(adjacentVertices[3]->isSettled(), adjacentVertices[3]->isSettled() ? adjacentVertices[3]->getOwnerPlayer().getName() : "", adjacentVertices[3]->isSettled() ? adjacentVertices[3]->getOwnerPlayer().getColor() : "", adjacentVertices[3]);
     std::cout << "-4     "; // 4
 
     std::cout << "   ";
-    printWithColor(adjacentVertices[4]->isSettled(), adjacentVertices[4]->isSettled() ? adjacentVertices[4]->getOwnerPlayer().getName() : "",adjacentVertices[4]->isSettled()? adjacentVertices[4]->getOwnerPlayer().getColor():"",adjacentVertices[4]);
+    printWithColor(adjacentVertices[4]->isSettled(), adjacentVertices[4]->isSettled() ? adjacentVertices[4]->getOwnerPlayer().getName() : "", adjacentVertices[4]->isSettled() ? adjacentVertices[4]->getOwnerPlayer().getColor() : "", adjacentVertices[4]);
     std::cout << "-5" << std::endl; // 5
 
     std::cout << "         ";
-    printWithColor(adjacentVertices[5]->isSettled(), adjacentVertices[5]->isSettled() ? adjacentVertices[5]->getOwnerPlayer().getName() : "", adjacentVertices[5]->isSettled()?adjacentVertices[5]->getOwnerPlayer().getColor():"",adjacentVertices[5]);
+    printWithColor(adjacentVertices[5]->isSettled(), adjacentVertices[5]->isSettled() ? adjacentVertices[5]->getOwnerPlayer().getName() : "", adjacentVertices[5]->isSettled() ? adjacentVertices[5]->getOwnerPlayer().getColor() : "", adjacentVertices[5]);
     std::cout << "-6" << std::endl; // 6
 }
-//Vertex related functions
+// Vertex related functions
 void Tile::printRoads()
 {
     std::cout << "         ";
@@ -148,7 +148,8 @@ void Tile::printRoads()
         std::cout << "Not";
     }
     std::cout << std::endl; // 6
-}void Tile::addVertex(Vertex *v, size_t index)
+}
+void Tile::addVertex(Vertex *v, size_t index)
 {
     if (index >= 7 || index < 1)
     {
@@ -180,7 +181,7 @@ void Tile::addRoad(Road *r, size_t index)
     }
     adjacentRoads[index - 1] = r;
 }
-Road* Tile::getRoadPtr(size_t index)
+Road *Tile::getRoadPtr(size_t index)
 {
     if (index >= 7 || index < 1)
     {

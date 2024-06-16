@@ -43,8 +43,6 @@ Board::~Board() // I wanted a simple implemantation of the destructor but I had 
             }
         }
     }
-    
-
 }
 
 void Board::placeRobber(int x, int y)
@@ -123,11 +121,48 @@ void Board::ReleventTiles(int ver, std::vector<std::pair<Tile, int>> &relevantTi
         }
     }
 }
-bool Board::buildSet(int x, int y, int z, Player *player)
+bool Board::switchRoadforSettlment(int x, int y, int z, Player *player)
+{
+
+    switch (z)
+    {       // look at the png for clarifcation
+    case 1: // I am edge 1 and I want my neighbors
+        return checkforRoad(x, y, 1, player) || checkforRoad(x, y, 6, player) ||
+               (x > 2 ? checkforRoad(x - 1, y, 2, player) : checkforRoad(x - 1, y, 5, player)); // good
+    case 2:
+        return checkforRoad(x, y, 6, player) || checkforRoad(x, y, 5, player) || // good
+               (checkforRoad(x, y - 1, 1, player)) || (x >= 2 ? checkforRoad(x - 1, y, 4, player) : false);
+    case 3:
+        return checkforRoad(x, y, 1, player) || checkforRoad(x, y, 2, player) || // good
+               (x > 2 ? (checkforRoad(x - 1, y + 1, 3, player))
+                      : checkforRoad(x, y + 1, 6, player)); // look down
+    case 4:
+        return checkforRoad(x, y, 5, player) || checkforRoad(x, y, 4, player) || // good
+               (x > 2 ? (checkforRoad(x, y - 1, 3, player)) : checkforRoad(x + 1, y, 6, player));
+    case 5:
+        return checkforRoad(x, y, 2, player) || checkforRoad(x, y, 3, player) ||
+                       checkforRoad(x, y + 1, 4, player) ||
+                       x > 2
+                   ? false
+                   : checkforRoad(x + 1, y + 1, 1, player); // look up
+    case 6:
+        return checkforRoad(x, y, 3, player) || checkforRoad(x, y, 4, player) ||
+               (x > 2 ? (checkforRoad(x + 1, y - 1, 2, player) || checkforRoad(x + 1, y, 6, player)) : (checkforRoad(x + 1, y, 2, player)));
+    }
+    return false; // Default case if z is not 1-6
+}
+bool Board::buildSet(int x, int y, int z, Player *player, bool midgame)
 { // need to use name for the player thingi
     if (tiles[x][y].getVertex(z).isSettled())
     {
         return false;
+    }
+    if (midgame)
+    {
+        if (!switchRoadforSettlment(x, y, z, player))
+        {
+            return false; // no road close to me can't reach
+        }
     }
     int ver = tiles[x][y].getVertex(z).getOwnerint(); // I know what is the name of the owner
 
@@ -135,7 +170,7 @@ bool Board::buildSet(int x, int y, int z, Player *player)
     ReleventTiles(ver, relevantTiles);
     for (size_t i = 0; i < relevantTiles.size(); i++)
     {
-        if (relevantTiles[i].first.neighborSet(relevantTiles[i].second)) // I get into the tile and then find the neigbor set of
+        if (relevantTiles[i].first.neighborSet(relevantTiles[i].second)) // I get into the tile and then find the neigbor settlment or Road
         {
             return false;
         }
@@ -256,8 +291,8 @@ void Board::fourToOne(int i, int j)
     { // for 1,4
         // std::cout<<tiles[i-1].size()<<std::endl;
         if ((size_t)j == tiles[i - 1].size())
-        { // if I am in the end I have to go back by one
-            tiles[i][j].addVertex(tiles[i - 1][j - 1].getVertexPointer(4), 1); //no way I found this bug so fast 
+        {                                                                      // if I am in the end I have to go back by one
+            tiles[i][j].addVertex(tiles[i - 1][j - 1].getVertexPointer(4), 1); // no way I found this bug so fast
         }
         else
         {
@@ -323,8 +358,8 @@ void Board::initializeRoads()
     {
         Road *v1 = new Road(player);
         tiles[i][0].addRoad(v1, 5);
-        //Road *v2 = new Road(player);
-        //tiles[i][0].addRoad(v2, 2);
+        // Road *v2 = new Road(player);
+        // tiles[i][0].addRoad(v2, 2);
 
         for (size_t j = 0; j < tiles[i].size(); j++)
         {
@@ -336,52 +371,50 @@ void Board::initializeRoads()
                 connect5to2(i, j, v4);
             }
 
-             // the floor
-             Road *v5 = new Road(player);
-             tiles[i][j].addRoad(v5, 3);
-             Road *v6 = new Road(player);
-             tiles[i][j].addRoad(v6, 4);
-                if ((i == 1 || i == 2) && (j == 0 || j == tiles[i].size() - 1))
-    {
-        if (j == 0) // ceiling edge cases
-        {
-            Road *v7 = new Road(player);
-            tiles[i][j].addRoad(v7, 6);
-            Road *v8 = tiles[i - 1][j].getRoadPtr(4);
-            connect1to4(i, j, v8);
-        }
-        else
-        {
-            Road *v7 = new Road(player);
-            tiles[i][j].addRoad(v7, 1);
-            Road *v8 = tiles[i - 1][j - 1].getRoadPtr(3);
-            connect6to3(i, j, v8);
+            // the floor
+            Road *v5 = new Road(player);
+            tiles[i][j].addRoad(v5, 3);
+            Road *v6 = new Road(player);
+            tiles[i][j].addRoad(v6, 4);
+            if ((i == 1 || i == 2) && (j == 0 || j == tiles[i].size() - 1))
+            {
+                if (j == 0) // ceiling edge cases
+                {
+                    Road *v7 = new Road(player);
+                    tiles[i][j].addRoad(v7, 6);
+                    Road *v8 = tiles[i - 1][j].getRoadPtr(4);
+                    connect1to4(i, j, v8);
+                }
+                else
+                {
+                    Road *v7 = new Road(player);
+                    tiles[i][j].addRoad(v7, 1);
+                    Road *v8 = tiles[i - 1][j - 1].getRoadPtr(3);
+                    connect6to3(i, j, v8);
+                }
+            }
+            else // creating floor
+            {
+                if (i == 0)
+                    continue;
+                Road *v7;
+                Road *v8;
+                if (tiles[i].size() > tiles[i - 1].size())
+                {
+                    v7 = tiles[i - 1][j].getRoadPtr(4);
+                    v8 = tiles[i - 1][j - 1].getRoadPtr(3);
+                }
+                else
+                {
+                    v7 = tiles[i - 1][j + 1].getRoadPtr(4);
+                    v8 = tiles[i - 1][j].getRoadPtr(3);
+                }
+                // connect ceiling not edge cases
+                connect1to4(i, j, v7);
+                connect6to3(i, j, v8);
+            }
         }
     }
-    else // creating floor
-    {
-        if (i == 0)
-            continue;
-        Road *v7;
-        Road *v8;
-        if (tiles[i].size() > tiles[i - 1].size())
-        {
-            v7 = tiles[i - 1][j].getRoadPtr(4);
-            v8 = tiles[i - 1][j - 1].getRoadPtr(3);
-        }
-        else
-        {
-            v7 = tiles[i - 1][j + 1].getRoadPtr(4);
-            v8 = tiles[i - 1][j].getRoadPtr(3);
-        }
-        // connect ceiling not edge cases
-        connect1to4(i, j, v7);
-        connect6to3(i, j, v8);
-    }
-
-        }
-    }
-    
 }
 
 void Board::connect5to2(int x, int y, Road *r1)
@@ -419,7 +452,7 @@ void Board::printBoard()
     std::cout << "                   ";
     for (size_t i = 0; i < tiles[0].size(); ++i)
     {
-        std::cout << (tiles[0][i].getVertex(1).isSettled()? tiles[0][i].getVertex(1).getOwnerPlayer().getColor():RESET)<< std::setw(9) << "__" + tiles[0][i].getVertex(1).getOwner() + "__ " << RESET << "  ";
+        std::cout << (tiles[0][i].getVertex(1).isSettled() ? tiles[0][i].getVertex(1).getOwnerPlayer().getColor() : RESET) << std::setw(9) << "__" + tiles[0][i].getVertex(1).getOwner() + "__ " << RESET << "  ";
     }
     std::cout << std::endl;
 
@@ -432,45 +465,47 @@ void Board::printBoard()
         {
             std::cout << offset[i] + "       ";
         }
-        else if (i == 3){
-            std::cout << "    " ;
+        else if (i == 3)
+        {
+            std::cout << "    ";
         }
-        else{
+        else
+        {
             std::cout << "          ";
         }
-        
+
         if (i == 3 || i == 4)
         {
-            std::cout <<tiles[i - 1][0].getRoadPtr(4)->getOwner().getColor()  <<  std::setw(9)<<"\\" << RESET << " ";
+            std::cout << tiles[i - 1][0].getRoadPtr(4)->getOwner().getColor() << std::setw(9) << "\\" << RESET << " ";
         }
-        for (size_t j = 0; j < tiles[i].size(); j++) //road
+        for (size_t j = 0; j < tiles[i].size(); j++) // road
         {
             std::cout << tiles[i][j].getRoadPtr(6)->getOwner().getColor() << "/" << RESET << "";
             std::cout << tiles[i][j].getRoadPtr(1)->getOwner().getColor() << std::setw(9) << "\\" << RESET << " ";
         }
         if (i == 3 || i == 4)
-        { //road
+        { // road
             std::cout << tiles[i - 1][tiles[i - 1].size() - 1].getRoadPtr(3)->getOwner().getColor() << "/" << RESET << "";
         }
         std::cout << std::endl;
         for (int k = 0; k < 2; ++k)
         {
             std::cout << resources[i];
-            if (k == 0)//Vertex
+            if (k == 0) // Vertex
             {
-                std::cout << (tiles[i][0].getVertex(2).isSettled()? tiles[i][0].getVertex(2).getOwnerPlayer().getColor():RESET) \
-                << std::setw(8) << tiles[i][0].getVertex(2).getOwner() << RESET << "  ";
+                std::cout << (tiles[i][0].getVertex(2).isSettled() ? tiles[i][0].getVertex(2).getOwnerPlayer().getColor() : RESET)
+                          << std::setw(8) << tiles[i][0].getVertex(2).getOwner() << RESET << "  ";
             }
-            else//vertex
+            else // vertex
             {
-                std::cout << (tiles[i][0].getVertex(4).isSettled()? tiles[i][0].getVertex(4).getOwnerPlayer().getColor():RESET) \
-                << "  " << std::setw(8) << "__" + tiles[i][0].getVertex(4).getOwner() + "__" << RESET << "  ";
+                std::cout << (tiles[i][0].getVertex(4).isSettled() ? tiles[i][0].getVertex(4).getOwnerPlayer().getColor() : RESET)
+                          << "  " << std::setw(8) << "__" + tiles[i][0].getVertex(4).getOwner() + "__" << RESET << "  ";
             }
-            //Road
-            for (size_t j = 0; j < tiles[i].size(); ++j) //vertex
+            // Road
+            for (size_t j = 0; j < tiles[i].size(); ++j) // vertex
             {
-                std::cout << (tiles[i][j].getVertex(k == 0 ? 3 : 5).isSettled()? tiles[i][j].getVertex(k == 0 ? 3 : 5).getOwnerPlayer().getColor():RESET)\
-                << "" << std::setw(9) << (k == 0 ? "" : "__") + tiles[i][j].getVertex(k == 0 ? 3 : 5).getOwner() + (k == 0 ? "" : "__") << RESET << "  ";
+                std::cout << (tiles[i][j].getVertex(k == 0 ? 3 : 5).isSettled() ? tiles[i][j].getVertex(k == 0 ? 3 : 5).getOwnerPlayer().getColor() : RESET)
+                          << "" << std::setw(9) << (k == 0 ? "" : "__") + tiles[i][j].getVertex(k == 0 ? 3 : 5).getOwner() + (k == 0 ? "" : "__") << RESET << "  ";
             }
             std::cout << std::endl;
 
@@ -522,14 +557,91 @@ void Board::printBoard()
               << "                ";
     for (size_t i = 0; i < tiles[4].size(); ++i)
     {
-        std::cout << (tiles[4][i].getVertex(6).isSettled()? tiles[4][i].getVertex(6).getOwnerPlayer().getColor():RESET) \
-        << std::setw(9) << tiles[4][i].getVertex(6).getOwner() << RESET << "   ";
+        std::cout << (tiles[4][i].getVertex(6).isSettled() ? tiles[4][i].getVertex(6).getOwnerPlayer().getColor() : RESET)
+                  << std::setw(9) << tiles[4][i].getVertex(6).getOwner() << RESET << "   ";
     }
 } // enf of function
+bool Board::rightSet(int x, int y, int z, Player *player) // return true if I am next to a settelment
+{
+    if (tiles[x][y].getVertex(z).isSettled() ? tiles[x][y].getVertex(z).getOwnerPlayer().getName() != player->getName() : false)
+    {
+        return false;
+    }
+    return tiles[x][y].getVertex(z).isSettled();
+}
+bool Board::switchy(int x, int y, int z, Player *player) // return true if I can build
+{
+    switch (z)
+    {
+    case 1:
+        return rightSet(x, y, 1, player) || rightSet(x, y, 3, player);
+        break;
+    case 2:
+        return rightSet(x, y, 3, player) || rightSet(x, y, 5, player);
+        break;
+    case 3:
+        return rightSet(x, y, 5, player) || rightSet(x, y, 6, player);
+        break;
+    case 4:
+        return rightSet(x, y, 4, player) || rightSet(x, y, 6, player);
+        break;
+    case 5:
+        return rightSet(x, y, 2, player) || rightSet(x, y, 4, player);
+        break;
+    case 6:
+        return rightSet(x, y, 2, player) || rightSet(x, y, 1, player);
+        break;
+    default:
+        break;
+    }
+}
+bool Board::checkforRoad(int x, int y, int z, Player *player)
+{
+    if (x < 0 || x >= tiles.size() || y < 0 || y >= tiles[x].size())
+    {
+        return false;
+    }
+    if (tiles[x][y].getRoadPtr(z)->getOwner().getName() == player->getName()) // if they are owned by the same player we good
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Board::switchRoad(int x, int y, int z, Player *player)
+{
+    switch (z)
+    {       // look at the png for clarifcation
+    case 1: // I am edge 1 and I want my neighbors
+        return checkforRoad(x, y, 2, player) || checkforRoad(x, y, 6, player) ||
+               (x > 2 ? (checkforRoad(x - 1, y + 1, 3, player) || checkforRoad(x - 1, y + 1, 5, player)) // look up
+                       : (checkforRoad(x - 1, y, 3, player) || checkforRoad(x - 1, y, 5, player)));       // need the other tile
+    case 2:
+        return checkforRoad(x, y, 1, player) || checkforRoad(x, y, 3, player) ||
+               (checkforRoad(x, y + 1, 6, player) || checkforRoad(x, y + 1, 4, player));
+    case 3:
+        return checkforRoad(x, y, 2, player) || checkforRoad(x, y, 4, player) ||
+               (x > 2 ? (checkforRoad(x + 1, y, 2, player) || checkforRoad(x + 1, y, 4, player)) : (checkforRoad(x + 1, y + 1, 2, player) || checkforRoad(x + 1, y + 1, 4, player))); // look down
+    case 4:
+        return checkforRoad(x, y, 3, player) || checkforRoad(x, y, 5, player) ||
+               (x > 2 ? (checkforRoad(x + 1, y - 1, 2, player) || checkforRoad(x + 1, y - 1, 6, player)) : (checkforRoad(x + 1, y, 2, player) || checkforRoad(x + 1, y, 6, player)));
+    case 5:
+        return checkforRoad(x, y, 4, player) || checkforRoad(x, y, 6, player) ||
+               (checkforRoad(x, y - 1, 1, player) || checkforRoad(x, y - 1, 3, player)); // look up
+    case 6:
+        return checkforRoad(x, y, 1, player) || checkforRoad(x, y, 5, player) ||
+               (x >= 2 ? (checkforRoad(x - 1, y, 2, player) || checkforRoad(x - 1, y, 4, player)) : (checkforRoad(x - 1, y - 1, 2, player) || checkforRoad(x - 1, y - 1, 4, player)));
+    }
+    return false; // Default case if z is not 1-6
+}
 
 bool Board::buildRoad(int x, int y, int z, Player *player)
 {
     if (tiles[x][y].getRoadPtr(z)->getOwner().getName() != "")
+    {
+        return false;
+    }
+    if (!switchy(x, y, z, player) && !switchRoad(x, y, z, player)) // to check for settelments
     {
         return false;
     }
@@ -556,14 +668,17 @@ void Board::showRoads(int x, int y)
     tiles[x][y].printRoads();
     std::cout << std::endl;
 }
-bool Board::tradeResources(Player& me, Player& other, std::map<std::string, int> offer, std::map<std::string, int> request) {
+bool Board::tradeResources(Player &me, Player &other, std::map<std::string, int> offer, std::map<std::string, int> request)
+{
     // Check if 'me' has enough resources to offer
-    if (!me.hasResources(offer)) {
+    if (!me.hasResources(offer))
+    {
         return false;
     }
 
     // Check if 'other' has enough resources to meet the request
-    if (!other.hasResources(request)) {
+    if (!other.hasResources(request))
+    {
         return false;
     }
 

@@ -5,7 +5,8 @@
 // #include "Player.h"
 #include "Board.h"
 
-class GameManager {
+class GameManager
+{
 public:
     // GameManager(std::vector<Player> players);
     GameManager(std::vector<Player> gamePlayers);
@@ -15,14 +16,14 @@ public:
     void nextTurn();
     bool checkWinCondition();
     void get(size_t row, size_t col);
-    bool BuildSettlement(size_t row, size_t col,int z, Player* name);
+    bool BuildSettlement(size_t row, size_t col, int z, Player *name, bool flag);
     void printBoard();
     void getSettlmets(int x, int y);
     bool upgradeToCity(int x, int y, int z);
-    Player* getPlayer();
+    Player *getPlayer();
     void play();
-    bool buildRoad(int, int ,int,Player* player);
-    void showRoads(int,int);
+    bool buildRoad(int, int, int, Player *player);
+    void showRoads(int, int);
 
 private:
     void firstRound();
@@ -30,7 +31,7 @@ private:
     Board board;
     int currentTurn;
     std::string gameState;
-    bool tradeWithOtherPlayers(size_t other,std::map<std::string, int> resourcesGiven,std::map<std::string, int> resourcesReceived);
+    bool tradeWithOtherPlayers(size_t other, std::map<std::string, int> resourcesGiven, std::map<std::string, int> resourcesReceived);
 };
 
 #endif // GAMEMANAGER_H

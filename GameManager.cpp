@@ -57,16 +57,16 @@ void GameManager::play()
 
             std::cout << "Building a settlement give me x,y for tile and the vertex z" << std::endl;
             std::cin >> x >> y >> z;
-            std::cout << (BuildSettlement(x, y, z, getPlayer()) ? "Settlement built successfully" : "Settlement build failed") << std::endl;
+            std::cout << (BuildSettlement(x, y, z, getPlayer(), true) ? "Settlement built successfully" : "Settlement build failed") << std::endl;
             getSettlmets(x, y);
-
+            showRoads(x, y);
             break;
         case 2:
             // getPlayer().buyDevelopmentCard();
             break;
         case 3:
             std::cin >> x >> y >> z;
-            std::cout << (buildRoad(x, y, z,getPlayer()) ? "Road built successfully" : "Road build failed") << std::endl;
+            std::cout << (buildRoad(x, y, z, getPlayer()) ? "Road built successfully" : "Road build failed") << std::endl;
             showRoads(x, y);
             break;
         case 4:
@@ -109,7 +109,7 @@ void GameManager::play()
             std::cout << getPlayer()->showResources();
             break;
         default:
-            std::cout << "Invalid choice. Please enter a number from 1 to 6." <<choice<< std::endl;
+            std::cout << "Invalid choice. Please enter a number from 1 to 6." << choice << std::endl;
         }
 
     } while (choice != 6); // I get 6 next to the next player and finish the while loop
@@ -131,9 +131,9 @@ Player *GameManager::getPlayer()
 {
     return &players[currentTurn];
 }
-bool GameManager::BuildSettlement(size_t row, size_t col, int z, Player *player)
+bool GameManager::BuildSettlement(size_t row, size_t col, int z, Player *player, bool flag)
 {
-    return board.buildSet(row, col, z, player);
+    return board.buildSet(row, col, z, player, flag);
 }
 bool GameManager::upgradeToCity(int x, int y, int z)
 {
@@ -169,48 +169,47 @@ bool GameManager::checkWinCondition()
 }
 void GameManager::firstRound()
 {
-    std::cout<<"\nFirst round\n";
+    std::cout << "\nFirst round\n";
     for (size_t i = 0; i < players.size(); i++)
     {
-        bool choice = false,choice2 = false;
+        bool choice = false, choice2 = false;
         while (!choice)
         {
             std::cout << "Player " << players[i].getName() << "'s turn" << std::endl;
             int x, y, z;
             std::cout << "Building a settlement give me x,y for tile and the vertex z" << std::endl;
             std::cin >> x >> y >> z;
-            choice = BuildSettlement(x, y, z, &players[i]) ? true : (std::cout << "Settlement build failed" << std::endl, false); // hope it works
-            choice2 =! choice;
+            choice = BuildSettlement(x, y, z, &players[i], false) ? true : (std::cout << "Settlement build failed" << std::endl, false); // hope it works
+            choice2 = !choice;
             while (!choice2)
             { // if it's true then I want to build a road
                 std::cout << "Building a road give me x,y for tile and the vertex z" << std::endl;
                 std::cin >> x >> y >> z;
-                choice2 = buildRoad(x, y, z,&players[i]) ? (std::cout << "Built a road\n", true) : false; //I want it false to end the turn
+                choice2 = buildRoad(x, y, z, &players[i]) ? (std::cout << "Built a road\n", true) : false; // I want it false to end the turn
             }
         }
-        std::cout<<players[i].showResources();
+        std::cout << players[i].showResources();
     }
-    std::cout<<"\nSecond round\n";
-for (size_t i = players.size() - 1; i != static_cast<size_t>(-1); --i)
+    std::cout << "\nSecond round\n";
+    for (size_t i = players.size() - 1; i != static_cast<size_t>(-1); --i)
     {
-        //need to give resources don't forget
-        bool choice = false,choice2 = false;
+        // need to give resources don't forget
+        bool choice = false, choice2 = false;
         while (!choice)
         {
             std::cout << "Player " << players[i].getName() << "'s turn" << std::endl;
             int x, y, z;
             std::cout << "Building a settlement give me x,y for tile and the vertex z" << std::endl;
             std::cin >> x >> y >> z;
-            choice = BuildSettlement(x, y, z, &players[i]) ? true : (std::cout << "Settlement build failed" << std::endl, false); // hope it works
-            choice2 =! choice;
+            choice = BuildSettlement(x, y, z, &players[i], false) ? true : (std::cout << "Settlement build failed" << std::endl, false); // hope it works
+            choice2 = !choice;
             while (!choice2)
             { // if it's true then I want to build a road
                 std::cout << "Building a road give me x,y for tile and the vertex z" << std::endl;
                 std::cin >> x >> y >> z;
-                choice2 = buildRoad(x, y, z,&players[i]) ? (std::cout << "Built a road\n", true) : false; //I want it false to end the turn
+                choice2 = buildRoad(x, y, z, &players[i]) ? (std::cout << "Built a road\n", true) : false; // I want it false to end the turn
             }
         }
-        std::cout<<players[i].showResources();
+        std::cout << players[i].showResources();
     }
-
 }

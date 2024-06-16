@@ -8,7 +8,8 @@
 int main() {
     // Initialize the game manager
     Player* player1 = new Player("player1",GREEN_TEXT	);
-    Player* player2 = new Player("player2",GREEN_TEXT	);
+    Player* player2 = new Player("player2",CYAN	);
+    
     GameManager gameManager({*player1,*player2});
     gameManager.startGame();
     std::cout<<"\n";
