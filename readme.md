@@ -9,6 +9,7 @@ I created an interactive Catan game
 - [Installation](#installation)
 - [Manu-Game](#Manu-Game)
 - [Usage](#usage)
+- [TestCases](#TestCases)
 - [Contact](#contact)
 
 
@@ -93,8 +94,48 @@ and to finally run the code
 ```
     ./catan 
 ```
+## TestCases
 
+### Player Test Cases
 
+- **Creation of Player**: Initializes a player object, verifying basic properties like name and color.
+- **Add Resources**: Adds resources to a player's inventory, testing the addition functionality.
+- **Subtract Resources**: Removes resources from a player's inventory, ensuring accurate subtraction.
+- **Build Settlement**: Constructs a settlement, validating resource requirements and player state updates.
+- **Build Road**: Builds roads, confirming resource usage and player status changes.
+- **Upgrade to City**: Upgrades settlements to cities, checking resource availability and state transitions.
+- **Buy Development Card and Use**: Purchases and uses development cards, impacting player state and resources.
+- **Amount of Victory Points**: Calculates victory points based on player actions and resources.
+- **Show Resources**: Displays current resources held by a player.
+- **Discard Half Resources**: Discards half of a player's resources, verifying operation accuracy.
+
+### Board Test Cases
+
+- **Check Dice Generation**: Validates the generation of dice rolls and their effects on gameplay.
+
+### Settlement Test Cases
+
+- **Settlement Creation**: Creates a settlement, including ownership and upgrade functionalities.
+
+### Tile Test Cases
+
+- **Tile Creation**: Verifies the creation of tiles, focusing on resource type and quantity attributes.
+
+### Card Test Cases
+
+- **Card Creation**: Confirms the creation of various card types (e.g., KnightCard, VictoryPointCard) and their identification.
+
+### Vertex Test Cases
+
+- **Vertex Creation**: Sets up vertices properly, including settlement placement and ownership tracking.
+
+### Road Test Cases
+
+- **Road Creation**: Validates the creation of roads, emphasizing ownership and connection verification.
+
+### GameManager Test Cases
+
+- **GameManager Test Case**: Covers the initiation of the game, player interactions, and win condition evaluations.
 ## Contact
 
 Roi Sibony, Roisi20041@gmail.com

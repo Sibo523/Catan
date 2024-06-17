@@ -19,6 +19,22 @@ std::map<std::string, int> Player::getResources() const
 {
     return resources;
 }
+void Player::discardHalfResources()
+{
+    for (auto &item : resources)
+    {
+        item.second /= 2;
+    }
+}
+int Player::amountOfTotalResources() const
+{
+    int total = 0;
+    for (const auto &item : resources)
+    {
+        total += item.second;
+    }
+    return total;
+}
 void Player::addKnight()
 {
     knightCount++;

@@ -27,6 +27,17 @@ void GameManager::play()
     std::cout << RED << "Player " << players[currentTurn].getName() << "'s turn" << std::endl
               << RESET_TEXT;
     int dice = rand() % 6 + 1 + rand() % 6 + 1;
+    if (dice == 7)
+    {
+        for (Player player : players)
+        {
+            if (player.amountOfTotalResources() > 7)
+            {
+                std::cout << "Player " << player.getName() << " has more than 7 resources. They must discard half of their resources." << std::endl;
+                player.discardHalfResources();
+            }
+        }
+    }
     std::cout << "Dice rolled: " << dice << std::endl;
     board.generateResources(dice);
     int choice;

@@ -145,6 +145,21 @@ TEST_CASE("Show resources")
     player1.addResource("ore", 5);
     CHECK_EQ(player1.showResources(), "wood: 1\nbrick: 2\nsheep: 3\nwheat: 4\nore: 5\nDevelopment Cards:\n");
 }
+TEST_CASE("discard half resources")
+{
+    Player player1 = Player("player1", GREEN_TEXT);
+    player1.addResource("wood", 1);
+    player1.addResource("brick", 2);
+    player1.addResource("sheep", 3);
+    player1.addResource("wheat", 4);
+    player1.addResource("ore", 5);
+    player1.discardHalfResources();
+    CHECK_EQ(player1.getResources().at("wood"), 0);
+    CHECK_EQ(player1.getResources().at("brick"), 1);
+    CHECK_EQ(player1.getResources().at("sheep"), 1);
+    CHECK_EQ(player1.getResources().at("wheat"), 2);
+    CHECK_EQ(player1.getResources().at("ore"), 2);
+}
 ///////////////////////////////////////////////////Board Test Cases////////////////////////////////////////////
 TEST_CASE("Check dice generation") // and build settlment
 {

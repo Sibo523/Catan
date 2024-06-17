@@ -40,6 +40,8 @@ public:
     void addKnight();
     int getKnightCount() const;
     void largestArmy();
+    int amountOfTotalResources() const;
+    void discardHalfResources();
 
 private:
     int knightCount = 0;
