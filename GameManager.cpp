@@ -168,6 +168,30 @@ void RoadBuilding(GameManager *gameManager)
     std::cin >> x >> y >> z;
     gameManager->buildRoad(x, y, z, gameManager->getPlayer());
 }
+void Knight(GameManager *gameManager)
+{
+    std::cout << "Knight used\n";
+    // move the robber no need for this
+    // steal a resource //and this
+    // knight counter +=1
+    gameManager->getPlayer()->addKnight();
+    int max = 0;
+    for (Player player : gameManager->players)
+    {
+        if (player.getKnightCount() > max)
+        {
+            max = player.getKnightCount();
+        }
+    }
+    for (Player player : gameManager->players)
+    {
+        if (player.getKnightCount() == max) // if two players have the same it should give the first that got it but I don't need to do this
+        {
+            player.largestArmy();
+            break;
+        }
+    }
+}
 bool GameManager::useDevelopmentCard(Player *player, std::string cardType)
 {
     std::map<std::string, void (*)(GameManager *)> casemap;

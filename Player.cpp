@@ -10,6 +10,14 @@ std::map<std::string, int> Player::getResources() const
 {
     return resources;
 }
+void Player::addKnight()
+{
+    knightCount++;
+}
+int Player::getKnightCount() const
+{
+    return knightCount;
+}
 bool Player::buildSettlement()
 { // I get 3 lemurs for this
     if (!canBuildSettlement())
@@ -133,13 +141,19 @@ bool Player::buyDevCard(Card *c)
         resources["sheep"] -= 1;
         resources["ore"] -= 1;
         resources["wheat"] -= 1;
-        developmentCards.push_back(c);
-        return true;
+        if (c->getType() == "VictoryPoint")
+        {
+            victoryPoints++;
+            delete c;
+            return true;
+        }
+        else
+        {
+            developmentCards.push_back(c);
+            return true;
+        }
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 bool Player::canBuyDevCard() const
 {
@@ -154,21 +168,16 @@ bool Player::canBuildRoad() const
     return resources.at("wood") >= 1 && resources.at("brick") >= 1;
 }
 
-// void Player::tradeResources(Player& otherPlayer, std::map<std::string, int> offer, std::map<std::string, int> request) {
-//     // Logic to trade resources between players
-// }
-
-// void Player::useDevelopmentCard(std::string cardType) {
-//     // Logic to use a development card
-// }
-
-// void Player::endTurn()
-// {
-//     // Logic to end the player's turn
-// }
 std::string Player::getName() const
 {
     return name;
+}
+/**
+ * @brief add victory points because there's only 3 knights than don't need to unlargest army
+ */
+void Player::largestArmy()
+{
+    victoryPoints += 2;
 }
 
 // very himportant!
@@ -176,10 +185,7 @@ std::string Player::getColor() const
 {
     return color;
 }
-// void Player::setColor(std::string playerColor)
-// {
-//     color = playerColor;
-// }
+
 int Player::getVictoryPoints() const
 {
     return victoryPoints;

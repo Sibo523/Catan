@@ -30,7 +30,7 @@ private:
     friend void YearOfPlenty(GameManager *gameManager);
     friend void Monopoly(GameManager *gameManager);
     friend void RoadBuilding(GameManager *gameManager);
-
+    friend void Knight(GameManager *gameManager);
     std::vector<Player> players;
     Board board;
     int currentTurn;

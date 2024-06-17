@@ -36,8 +36,13 @@ public:
     bool buyDevCard(Card *card);
     bool useDevelopmentCard(std::string cardType);
     std::map<std::string, int> getResources() const;
+    void addKnight();
+    int getKnightCount() const;
+    void largestArmy();
 
 private:
+    int knightCount = 0;
+
     std::vector<Card *> developmentCards;
     bool canBuildRoad() const;
     std::string color;
