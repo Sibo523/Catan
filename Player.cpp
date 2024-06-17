@@ -8,6 +8,13 @@ Player::Player(std::string playerName, std::string color) // didn't do decunstor
     // resources = {{"wood", 4}, {"brick", 4}, {"sheep", 2}, {"wheat", 2}, {"ore", 0}}; // in a real game
     resources = {{"wood", 0}, {"brick", 0}, {"sheep", 0}, {"wheat", 0}, {"ore", 0}}; // in a real game
 }
+Player::~Player()
+{
+    for (size_t i = 0; i < developmentCards.size(); i++)
+    {
+        // delete developmentCards[i]; // if game ended and I have cards I need to delete them
+    }
+}
 std::map<std::string, int> Player::getResources() const
 {
     return resources;

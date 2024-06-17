@@ -10,14 +10,14 @@ Board::Board()
     setupCards();
 }
 
-Board::~Board() // I wanted a simple implemantation of the destructor but I had to do this :(
+Board::~Board()
 {
-    std::unordered_set<Vertex *> deletedVertices;
-    std::unordered_set<Road *> deletedRoads;
+    std::unordered_set<Vertex *> deletedVertices; // to not delete the same vertex twice
+    std::unordered_set<Road *> deletedRoads;      // to not delete the same road twice
     delete player;
     for (int i = 0; i < cards.size(); i++)
     {
-        delete cards[i]; // added from the test
+        delete cards[i]; // if there are any cards left
     }
     for (size_t i = 0; i < (size_t)tiles.size(); i++)
     {
@@ -40,7 +40,6 @@ Board::~Board() // I wanted a simple implemantation of the destructor but I had 
                         delete vertex->set;
                     }
                     delete vertex;
-
                     deletedVertices.insert(vertex);
                 }
             }
@@ -79,15 +78,15 @@ void Board::setupCards()
     // // Shuffle the deck
     // std::shuffle(cards.begin(), cards.end(), g);
 }
+
+/*
+    buy a random devolpment card from the deck, add to the player and pop from the deck, player frees the card
+*/
 bool Board::BuyDevelopmentCard(Player *player)
 {
     player->buyDevCard(cards.back());
-    cards.pop_back();
+    cards.pop_back(); // to not double free
     return true;
-}
-void Board::placeRobber(int x, int y)
-{
-    robberPosition = {x, y};
 }
 
 void Board::moveRobber(int x, int y)
@@ -674,11 +673,14 @@ bool Board::switchRoad(int x, int y, int z, Player *player)
     }
     return false; // Default case if z is not 1-6
 }
-void Board::giveFirstRoundResources(Player *player, int x, int y, int z)
+void Board::giveFirstRoundResources(Player *player, int x)
 {
-    if (tiles[x][y].getVertex(z).isSettled())
+
+    std::vector<std::pair<Tile, int>> relevantTiles;
+    ReleventTiles(x, relevantTiles);
+    for (int i = 0; i < relevantTiles.size(); i++)
     {
-        player->addResource(tiles[x][y].getResource(), tiles[x][y].getVertex(z).getSettlement().getAmount());
+        player->addResource(relevantTiles[i].first.getResource(), 1);
     }
 }
 bool Board::buildRoad(int x, int y, int z, Player *player)
@@ -736,4 +738,8 @@ bool Board::tradeResources(Player &me, Player &other, std::map<std::string, int>
     me.addResources(request);
 
     return true;
+}
+void Board::placeRobber(int x, int y) // maybe in the future
+{
+    robberPosition = {x, y};
 }

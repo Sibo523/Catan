@@ -76,7 +76,7 @@ void GameManager::play()
             std::cout << (upgradeToCity(x, y, z) ? "City upgraded successfully" : "City upgrade failed") << std::endl;
             getSettlmets(x, y);
             break;
-        case 5: // need to check why I can intilize things in switch case :()
+        case 5:
             std::cout << "Trading!\n";
             std::cout << "who do you want to trade with? ";
             std::cin >> player;
@@ -212,6 +212,8 @@ bool GameManager::useDevelopmentCard(Player *player, std::string cardType)
 void GameManager::nextTurn()
 {
     currentTurn = (currentTurn + 1) % players.size();
+    std::cout << currentTurn << "\n";
+    fflush(stdout);
 }
 void GameManager::get(size_t row, size_t col)
 {
@@ -265,9 +267,9 @@ bool GameManager::checkWinCondition()
     }
     return false;
 }
-void GameManager::giveFirstRoundResources(Player *player, int x, int y, int z)
+void GameManager::giveFirstRoundResources(Player *player, int x)
 {
-    board.giveFirstRoundResources(player, x, y, z);
+    board.giveFirstRoundResources(player, x);
 }
 void GameManager::firstRound()
 {
@@ -306,7 +308,9 @@ void GameManager::firstRound()
             std::cout << "Building a settlement give me x,y for tile and the vertex z" << std::endl;
             std::cin >> x >> y >> z;
             choice = BuildSettlement(x, y, z, &players[i], false) ? true : (std::cout << "Settlement build failed" << std::endl, false); // hope it works
-            if (choice)                                                                                                                  // need to give resources
+            x = board.getVertex(x, y, z)->getOwnerint();
+            giveFirstRoundResources(&players[i], x);
+            if (choice) // need to give resources
             {
             }
             choice2 = !choice;

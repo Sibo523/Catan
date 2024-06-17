@@ -18,6 +18,7 @@ class Player
 {
 public:
     Player(std::string name, std::string color);
+    ~Player();
     bool buildSettlement();
     bool upgradeToCity();
     void addResource(std::string resource, int amount);
@@ -25,10 +26,10 @@ public:
     // void tradeResources(Player& otherPlayer, std::map<std::string, int> offer, std::map<std::string, int> request);
     // void useDevelopmentCard(std::string cardType);
     std::string showResources();
-    //void endTurn();
+    // void endTurn();
     std::string getName() const;
     std::string getColor() const;
-    //void setColor(std::string color);
+    // void setColor(std::string color);
     int getVictoryPoints() const;
     void subtractResources(const std::map<std::string, int> &subtracted);
     void addResources(const std::map<std::string, int> &additional);

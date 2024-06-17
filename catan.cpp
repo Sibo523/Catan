@@ -16,15 +16,19 @@ int main()
     gameManager.startGame();
     std::cout << "\n";
     int counter = 0;
+
     while (!gameManager.checkWinCondition())
     {
         counter++;
         gameManager.play();
         if (counter == 2) // just go throw 2 rounds
         {
+            std::cout << "got to here\n";
+
             break;
         }
     }
+    std::cout << "hello";
     delete player1;
     delete player2;
     return 0;

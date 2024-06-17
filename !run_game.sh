@@ -16,12 +16,6 @@ echo "1 2 3\
     1\
     4 2 1\
     2\
-    8\
-    9\
-    "YearOfPlenty"\
-    "wood"\
-    "brick"\
-    8\
     6\
     6" |./catan
 #    resources = {{"wood", 8}, {"brick", 8}, {"sheep", 6}, {"wheat", 6}, {"ore", 1}}; // aight

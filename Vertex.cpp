@@ -24,7 +24,7 @@ Player Vertex::getOwnerPlayer()
     }
     return set->getOwner();
 }
-Player* Vertex::getOwnerPlayerPtr()
+Player *Vertex::getOwnerPlayerPtr()
 {
     if (set == nullptr)
     {
@@ -37,12 +37,15 @@ bool Vertex::isSettled()
     return flag;
 }
 
-Settlement Vertex::getSettlement(){
+Settlement Vertex::getSettlement()
+{
     return *set;
 }
-Settlement* Vertex::getSettlementPtr(){
+Settlement *Vertex::getSettlementPtr()
+{
     return set;
 }
-bool Vertex::operator==(const Vertex& other) const{
+bool Vertex::operator==(const Vertex &other) const
+{
     return owner == other.owner && numberToken == other.numberToken;
 }

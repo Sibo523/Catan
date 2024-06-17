@@ -33,42 +33,52 @@ public:
     void placeRobber(int x, int y);       // I have not been asked to implment this, but technically it's just a flag on the tile
     void moveRobber(int x, int y);        // undo the tiles so it can get resources and do the same thing as place robber
     void generateResources(int diceRoll); // give the resources to the playres assigned to that tile according to the settelments
-    void setupBoard(); //init 
-    void printBoard(); //print
-    void getTile(size_t x, size_t y);//print
-    std::vector<std::vector<Tile>> getTiles();
-    bool buildSet(int x, int y, int z, Player *player, bool);
-    void printTileSet(int x, int y);
-    bool upgradeToCity(int x, int y, int z, Player *player);
-    Vertex *getVertex(int x, int y, int z);
-    void showRoads(int x, int y);//print
+
+    void printBoard();                // print
+    void getTile(size_t x, size_t y); // print
+    void printTileSet(int x, int y);  // print
+    void showRoads(int x, int y);     // print
+
+    // building things
     bool buildRoad(int x, int y, int z, Player *player);
+    bool buildSet(int x, int y, int z, Player *player, bool); //
+    bool upgradeToCity(int x, int y, int z, Player *player);
+
+    // trade
     bool tradeResources(Player &me, Player &other, std::map<std::string, int> offer, std::map<std::string, int> request);
+    // buy development card
     bool BuyDevelopmentCard(Player *player);
-    void giveFirstRoundResources(Player *player, int x, int y, int z);
+    // called only in the first round that everyone puts the second settlement
+    void giveFirstRoundResources(Player *player, int x);
+    // get the pointer to the Vertex
+    Vertex *getVertex(int x, int y, int z);
+    // std::vector<std::vector<Tile>> getTiles(); //not used
+
 private:
-    void setupCards();
+    // initilize
+    void setupBoard(); // init
+    void setupCards(); // init
+    // feilds of the board
     std::vector<std::vector<Tile>> tiles;
     std::vector<Card *> cards;
+    // defult player for the initilization of the roads
     Player *player = new Player("", "");
     // helper function
     bool checkValidTile(size_t x, size_t y);
     void ReleventTiles(int, std::vector<std::pair<Tile, int>> &tiles);
-    // for the vertices
+    // for connecting vertices
     void put3254(int x, int y, Vertex *v1, Vertex *v2);
     void fourToOne(int x, int y);
     void sixToTwo(int x, int y);
-    // for the roads
+    // for connectiong roads
     void connect5to2(int x, int y, Road *r1);
     void connect1to4(int x, int y, Road *r1);
     void connect6to3(int x, int y, Road *r1);
-    // for the hexagons
+    // for entire map called buy setupBoard
     void initializeVertices();
     void initializeTiles();
     void initializeRoads();
-    // didn't do yet
-    std::vector<std::pair<int, int>> ports;
-    std::pair<int, int> robberPosition;
+
     // to create the tiles
     int generate_number_token(std::vector<std::pair<int, int>> &numberTokens);
     std::string generate_resource(std::vector<std::pair<std::string, int>> &numberTokens);
@@ -78,6 +88,10 @@ private:
     bool switchRoad(int x, int y, int z, Player *player);
     bool checkforRoad(int x, int y, int z, Player *player);
     bool switchRoadforSettlment(int x, int y, int z, Player *player);
+
+    // didn't do maybe in the future
+    std::vector<std::pair<int, int>> ports;
+    std::pair<int, int> robberPosition;
 };
 
 #endif // BOARD_H
