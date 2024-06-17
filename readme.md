@@ -24,13 +24,12 @@ for Arch:
 ```
 for Ubuntu:
 ```
-    sudo apt install valgrind //to check memory loss
+    sudo apt install valgrind 
 ```
 ```
-    sudo apt install systemd-coredump //used for debug 
+    sudo apt install systemd-coredump  
 ```
 
-Step-by-step instructions on how to install the project.
 ## Manu-Game
 There are 9 modes when playing the game 
 1. Build a settlement in a givent cordinates
