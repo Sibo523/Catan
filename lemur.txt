@@ -1,25 +1,43 @@
-    std::istringstream iss(R"(
-1 2 3
-1 2 2
-2 2 2
-2 2 6
-0 0 1
-0 0 1
-4 0 1
-4 0 1
-3
-1 2 3
-1
-2 2 3
-1
-4 2 1
-2
-8
-9
-YearOfPlenty
-wood
-brick
-8
-7
-6
-)");
+# Project Title
+
+## Description
+
+A brief summary of the project.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgments](#acknowledgments)
+- [Changelog](#changelog)
+
+## Installation
+
+Step-by-step instructions on how to install the project.
+
+## Usage
+
+Examples of how to use the project.
+
+## Contributing
+
+Guidelines for contributing to the project.
+
+## License
+
+Information about the project's license.
+
+## Contact
+
+Your contact information.
+
+## Acknowledgments
+
+Recognition of contributors and resources.
+
+## Changelog
+
+Record of significant changes made to the project.
