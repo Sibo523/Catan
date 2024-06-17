@@ -4,9 +4,12 @@ Player::Player(std::string playerName, std::string color) // didn't do decunstor
     : color(color), name(playerName), victoryPoints(0)
 {
     // Initialize resources to 0
-    resources = {{"wood", 8}, {"brick", 8}, {"sheep", 6}, {"wheat", 6}, {"ore", 0}}; // aight
+    resources = {{"wood", 8}, {"brick", 8}, {"sheep", 6}, {"wheat", 6}, {"ore", 1}}; // aight
 }
-
+std::map<std::string, int> Player::getResources() const
+{
+    return resources;
+}
 bool Player::buildSettlement()
 { // I get 3 lemurs for this
     if (!canBuildSettlement())
@@ -36,6 +39,21 @@ bool Player::upgradeToCity()
     // add the victory point it gives me
     victoryPoints += 1;
     return true;
+}
+bool Player::useDevelopmentCard(std::string cardType)
+{
+    // Logic to use a development card
+    for (size_t i = 0; i < developmentCards.size(); i++)
+    {
+        if (developmentCards[i]->getType() == cardType)
+        {
+            developmentCards[i]->use();
+            delete developmentCards[i];
+            developmentCards.erase(developmentCards.begin() + i);
+            return true;
+        }
+    }
+    return false;
 }
 bool Player::buildRoad()
 {
@@ -94,6 +112,11 @@ std::string Player::showResources()
     {
         result += resource + ": " + std::to_string(resources[resource]) + "\n";
     }
+    result += "Development Cards:\n";
+    for (size_t i = 0; i < developmentCards.size(); i++)
+    {
+        result += developmentCards[i]->getType() + "\n";
+    }
 
     return result;
 }
@@ -102,6 +125,21 @@ bool Player::canBuildSettlement() const
 {
     // Logic to determine if the player can build a settlement
     return resources.at("wood") >= 1 && resources.at("brick") >= 1 && resources.at("sheep") >= 1 && resources.at("wheat") >= 1;
+}
+bool Player::buyDevCard(Card *c)
+{
+    if (canBuyDevCard())
+    {
+        resources["sheep"] -= 1;
+        resources["ore"] -= 1;
+        resources["wheat"] -= 1;
+        developmentCards.push_back(c);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 bool Player::canBuyDevCard() const
 {

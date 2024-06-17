@@ -6,14 +6,18 @@
 
 #include <map>
 #include <vector>
+#include "Card.h"
+#include <typeinfo>
+
 // #include "Settlement.h"
 // #include "City.h"
 // #include "Road.h"
 // #include "DevelopmentCard.h"
 
-class Player {
+class Player
+{
 public:
-    Player(std::string name,std::string color);
+    Player(std::string name, std::string color);
     bool buildSettlement();
     bool upgradeToCity();
     void addResource(std::string resource, int amount);
@@ -29,8 +33,12 @@ public:
     void subtractResources(const std::map<std::string, int> &subtracted);
     void addResources(const std::map<std::string, int> &additional);
     bool hasResources(const std::map<std::string, int> &required) const;
-    
+    bool buyDevCard(Card *card);
+    bool useDevelopmentCard(std::string cardType);
+    std::map<std::string, int> getResources() const;
+
 private:
+    std::vector<Card *> developmentCards;
     bool canBuildRoad() const;
     std::string color;
     bool canBuildSettlement() const;
@@ -38,7 +46,6 @@ private:
     bool canUpgradeCity() const;
     std::string name;
     std::map<std::string, int> resources; // e.g., {"wood": 3, "brick": 2}
-
     // std::vector<DevelopmentCard> developmentCards;
     int victoryPoints;
 };

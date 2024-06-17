@@ -1,0 +1,17 @@
+bool useDevelopmentCard(Player *player, std::string cardType) {
+        std::map<std::string, void (GameManager::*)()> casemap;
+
+        // Populate the map with member function pointers
+        casemap["YearOfPlenty"] = &GameManager::YearOfPlenty;
+        casemap["Monopoly"] = &GameManager::Monopoly;
+
+        if (player->useDevelopmentCard(cardType)) {
+            auto it = casemap.find(cardType);
+            if (it != casemap.end()) {
+                // Call the member function using the instance of GameManager
+                (this->*(it->second))();
+                return true;
+            }
+        }
+        return false;
+    }

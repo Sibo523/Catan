@@ -34,13 +34,14 @@ void GameManager::play()
     {
         std::cout << "\nChoose an action:\n";
         std::cout << "1. Build Settlement\n";           // did
-        std::cout << "2. Buy Development Card\n";       // need to do
+        std::cout << "2. Buy Development Card\n";       // doing
         std::cout << "3. Build Road\n";                 // did
         std::cout << "4. Upgrade Settlement to City\n"; // did
         std::cout << "5. Trade with Other Players\n";   // did
         std::cout << "6. next turn\n";                  // did
         std::cout << "7. print board\n";                // did but I want to change something related the set and city
         std::cout << "8. show resources\n";             // dids
+        std::cout << "9. use development card\n";       // need to do
         std::cout << "Enter your choice (1-8): \n";
         std::cin >> choice;
         int x, y, z;
@@ -62,7 +63,7 @@ void GameManager::play()
             showRoads(x, y);
             break;
         case 2:
-            // getPlayer().buyDevelopmentCard();
+            std::cout << (BuyDevelopmentCard(getPlayer()) ? "Development card bought successfully" : "Development card buy failed") << std::endl;
             break;
         case 3:
             std::cin >> x >> y >> z;
@@ -106,7 +107,14 @@ void GameManager::play()
             printBoard();
             break;
         case 8:
+            std::cout << "____________________________________________\nPlayer " << getPlayer()->getName() << "'s resources:\n";
             std::cout << getPlayer()->showResources();
+            break;
+        case 9:
+            std::cout << "Which development card do you want to use?\n ";
+            std::cout << "YearOfPlenty, Monopoly, RoadBuilding\n";
+            std::cin >> input;
+            std::cout << (useDevelopmentCard(getPlayer(), input) ? "Development card used successfully" : "Development card use failed") << std::endl;
             break;
         default:
             std::cout << "Invalid choice. Please enter a number from 1 to 6." << choice << std::endl;
@@ -114,7 +122,65 @@ void GameManager::play()
 
     } while (choice != 6); // I get 6 next to the next player and finish the while loop
 }
+void YearOfPlenty(GameManager *gameManager)
+{
 
+    std::cout << "Year of Plenty used\n";
+    std::cout << "pick two resources\n";
+    std::string resource1, resource2;
+    std::cin >> resource1 >> resource2;
+    std::map<std::string, int> resources;
+    resources[resource1] = 1;
+    resources[resource2] += 1;
+    gameManager->getPlayer()->addResources(resources);
+}
+void Monopoly(GameManager *gameManager)
+{
+    std::string resource;
+    std::cout << "Monopoly used\n";
+    std::cout << "Choose a resource to take from all other players\n";
+    std::cin >> resource;
+    for (Player player : gameManager->players)
+    {
+        if (player.getName() != gameManager->getPlayer()->getName())
+        {
+            std::map<std::string, int> resources;
+            resources[resource] = player.getResources()[resource];
+            player.subtractResources(resources);
+            gameManager->getPlayer()->addResources(resources);
+        }
+    }
+}
+void RoadBuilding(GameManager *gameManager)
+{
+    std::cout << "Road Building used\n";
+    // give the player the resources to build
+    std::map<std::string, int> resources;
+    resources["wood"] = 1;
+    resources["brick"] = 1;
+    gameManager->getPlayer()->addResources(resources);
+    std::cout << "Building 2 roads\n";
+    int x, y, z;
+    std::cout << "Building a road give me x,y for tile and the vertex z" << std::endl;
+    std::cin >> x >> y >> z;
+    gameManager->buildRoad(x, y, z, gameManager->getPlayer());
+    std::cout << "Building a road give me x,y for tile and the vertex z" << std::endl;
+    std::cin >> x >> y >> z;
+    gameManager->buildRoad(x, y, z, gameManager->getPlayer());
+}
+bool GameManager::useDevelopmentCard(Player *player, std::string cardType)
+{
+    std::map<std::string, void (*)(GameManager *)> casemap;
+    casemap["YearOfPlenty"] = &YearOfPlenty;
+    casemap["Monopoly"] = &Monopoly;
+    casemap["RoadBuilding"] = &RoadBuilding;
+    if (player->useDevelopmentCard(cardType))
+    {
+        casemap[cardType](this);
+        return true;
+    }
+    return false;
+}
 void GameManager::nextTurn()
 {
     currentTurn = (currentTurn + 1) % players.size();
@@ -134,6 +200,10 @@ Player *GameManager::getPlayer()
 bool GameManager::BuildSettlement(size_t row, size_t col, int z, Player *player, bool flag)
 {
     return board.buildSet(row, col, z, player, flag);
+}
+bool GameManager::BuyDevelopmentCard(Player *player)
+{
+    return board.BuyDevelopmentCard(player);
 }
 bool GameManager::upgradeToCity(int x, int y, int z)
 {

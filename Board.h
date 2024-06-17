@@ -9,6 +9,10 @@
 #include <string>
 #include <unordered_set>
 #include "Tile.h"
+#include "Card.h"
+#include <memory>
+#include <algorithm>
+
 // #include "Settlement.h"
 
 const std::string RESET = "\033[0m";
@@ -40,10 +44,12 @@ public:
     void showRoads(int x, int y);
     bool buildRoad(int x, int y, int z, Player *player);
     bool tradeResources(Player &me, Player &other, std::map<std::string, int> offer, std::map<std::string, int> request);
-    // friend std::ostream& operator<<(std::ostream& os,Board& b);//print the graph
+    bool BuyDevelopmentCard(Player *player);
 
 private:
+    void setupCards();
     std::vector<std::vector<Tile>> tiles;
+    std::vector<Card *> cards;
     Player *player = new Player("", "");
     // helper function
     bool checkValidTile(size_t x, size_t y);

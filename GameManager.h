@@ -27,11 +27,17 @@ public:
 
 private:
     void firstRound();
+    friend void YearOfPlenty(GameManager *gameManager);
+    friend void Monopoly(GameManager *gameManager);
+    friend void RoadBuilding(GameManager *gameManager);
+
     std::vector<Player> players;
     Board board;
     int currentTurn;
     std::string gameState;
     bool tradeWithOtherPlayers(size_t other, std::map<std::string, int> resourcesGiven, std::map<std::string, int> resourcesReceived);
+    bool BuyDevelopmentCard(Player *player);
+    bool useDevelopmentCard(Player *player, std::string cardType);
 };
 
 #endif // GAMEMANAGER_H

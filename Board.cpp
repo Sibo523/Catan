@@ -1,11 +1,13 @@
 #include "Board.h"
 #include <iomanip>
 #include <unordered_set>
-
+#include "Card.h"
+#include <random>
 Board::Board()
 {
     // Initialize the board
     setupBoard();
+    setupCards();
 }
 
 Board::~Board() // I wanted a simple implemantation of the destructor but I had to do this :(
@@ -13,6 +15,10 @@ Board::~Board() // I wanted a simple implemantation of the destructor but I had 
     std::unordered_set<Vertex *> deletedVertices;
     std::unordered_set<Road *> deletedRoads;
     delete player;
+    for (int i = 0; i < cards.size(); i++)
+    {
+        // delete cards[i];
+    }
     for (size_t i = 0; i < (size_t)tiles.size(); i++)
     {
         for (size_t j = 0; j < (size_t)tiles[i].size(); j++)
@@ -45,6 +51,43 @@ Board::~Board() // I wanted a simple implemantation of the destructor but I had 
     }
 }
 
+void Board::setupCards()
+{
+    // Logic to setup cards
+    for (int i = 0; i < 3; i++)
+    {
+        Card *c = new KnightCard();
+        cards.push_back(c);
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        Card *c = new VictoryPointCard();
+        cards.push_back(c);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        Card *c1 = new MonopolyCard();
+        cards.push_back(c1);
+
+        Card *c2 = new RoadBuildingCard();
+        cards.push_back(c2);
+
+        Card *c3 = new YearOfPlentyCard();
+        cards.push_back(c3);
+    }
+    // shuffle cards
+    // std::random_device rd;
+    // std::mt19937 g(rd());
+
+    // // Shuffle the deck
+    // std::shuffle(cards.begin(), cards.end(), g);
+}
+bool Board::BuyDevelopmentCard(Player *player)
+{
+    player->buyDevCard(cards.back());
+    cards.pop_back();
+    return true;
+}
 void Board::placeRobber(int x, int y)
 {
     robberPosition = {x, y};
@@ -615,7 +658,7 @@ bool Board::switchRoad(int x, int y, int z, Player *player)
     case 1: // I am edge 1 and I want my neighbors
         return checkforRoad(x, y, 2, player) || checkforRoad(x, y, 6, player) ||
                (x > 2 ? (checkforRoad(x - 1, y + 1, 3, player) || checkforRoad(x - 1, y + 1, 5, player)) // look up
-                       : (checkforRoad(x - 1, y, 3, player) || checkforRoad(x - 1, y, 5, player)));       // need the other tile
+                      : (checkforRoad(x - 1, y, 3, player) || checkforRoad(x - 1, y, 5, player)));       // need the other tile
     case 2:
         return checkforRoad(x, y, 1, player) || checkforRoad(x, y, 3, player) ||
                (checkforRoad(x, y + 1, 6, player) || checkforRoad(x, y + 1, 4, player));
