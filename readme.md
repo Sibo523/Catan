@@ -143,7 +143,7 @@ Hope it helps :)
 
 ![BoardVertexes](./RelatedImages/howtheboardshouldlooklikeVertexwise.jpeg)
 ![ConnectVertexes](./RelatedImages/howIconnectVertexes.jpeg)
-![HowICheckForcloseRoads](./RelatedImages/HowICheckForcloseRoads.jpeg)
+![HowICheckForcloseRoads](./RelatedImages/howICheckForcloseRoads.jpeg)
 ![PassTests](./RelatedImages/PassTests.png)
 ![ValgrindCheck](./RelatedImages/Valgrind.png)
 
