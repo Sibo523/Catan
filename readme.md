@@ -138,7 +138,14 @@ and to finally run the code
 
 - **GameManager Test Case**: Covers the initiation of the game, player interactions, and win condition evaluations.
 ## RelatedImages
-![Image Description](./RelatedImages/Valgrind.png)
-## Contact
+These Images used in the process of making the game in order to give me intuation.
+Hope it helps :)
 
+![BoardVertexes](./RelatedImages/howtheboardshouldlooklikeVertexwise.jpeg)
+![ConnectVertexes](./RelatedImages/howIconnectVertexes.jpeg)
+![HowICheckForcloseRoads](./RelatedImages/HowICheckForcloseRoads.jpeg)
+![PassTests](./RelatedImages/PassTests.png)
+![ValgrindCheck](./RelatedImages/Valgrind.png)
+
+## Contact
 Roi Sibony, Roisi20041@gmail.com
