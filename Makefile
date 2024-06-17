@@ -12,7 +12,8 @@ run: all
 test: $(TEST_OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 	./test
-	
+coredump: all
+	coredumpctl gdb ./catan
 valgrind: all 
 	valgrind --leak-check=full --track-origins=yes echo ./test
 # valgrind --leak-check=full  --show-leak-kinds=all ./!run_game.sh //running this is irrelevent cause 

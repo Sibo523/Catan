@@ -2,7 +2,7 @@
 
 ## Description
 
-I created 
+I created an interactive Catan game
 
 ## Table of Contents
 
@@ -49,10 +49,15 @@ to run the test that I wrote use
     make test
     ./test
 ```
-and to check memory loss leak you can use 
+to check memory loss leak you can use 
 ```
     make valgrind
 ```
+and to debug the code using coredumpctl and gdb (make sure you have installed the requirments)
+```
+    make debug
+```
+
 
 Examples of how to use the project:
 change catan file to this
