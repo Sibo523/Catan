@@ -50,9 +50,9 @@ void GameManager::play()
         std::cout << "4. Upgrade Settlement to City\n"; // did
         std::cout << "5. Trade with Other Players\n";   // did
         std::cout << "6. next turn\n";                  // did
-        std::cout << "7. print board\n";                // did but I want to change something related the set and city
+        std::cout << "7. print board\n";                // did but I want to change something related the set and city //didn't do
         std::cout << "8. show resources\n";             // dids
-        std::cout << "9. use development card\n";       // need to do
+        std::cout << "9. use development card\n";       // dids
         std::cout << "Enter your choice (1-8): \n";
         std::cin >> choice;
         int x, y, z;
@@ -319,10 +319,10 @@ void GameManager::firstRound()
             std::cout << "Building a settlement give me x,y for tile and the vertex z" << std::endl;
             std::cin >> x >> y >> z;
             choice = BuildSettlement(x, y, z, &players[i], false) ? true : (std::cout << "Settlement build failed" << std::endl, false); // hope it works
-            x = board.getVertex(x, y, z)->getOwnerint();
-            giveFirstRoundResources(&players[i], x);
-            if (choice) // need to give resources
+            if (choice)                                                                                                                  // need to give resources
             {
+                x = board.getVertex(x, y, z)->getOwnerint();
+                giveFirstRoundResources(&players[i], x);
             }
             choice2 = !choice;
             while (!choice2)
