@@ -97,7 +97,11 @@ void GameManager::play()
             std::cout << "second player needs to confirm the trade(y)\n"; // get means request :)
             if (std::cin >> input && input == "y")
             {
+                std::cout << "after\n"
+                          << getPlayer()->showResources();
                 std::cout << (tradeWithOtherPlayers(player, give, get) ? "Trade successful" : "Trade failed") << std::endl;
+                std::cout << "before:\n"
+                          << getPlayer()->showResources();
             }
             break;
         case 6:
@@ -261,11 +265,17 @@ bool GameManager::checkWinCondition()
     }
     return false;
 }
+void GameManager::giveFirstRoundResources(Player *player, int x, int y, int z)
+{
+    board.giveFirstRoundResources(player, x, y, z);
+}
 void GameManager::firstRound()
 {
     std::cout << "\nFirst round\n";
     for (size_t i = 0; i < players.size(); i++)
     {
+        std::map<std::string, int> resources = {{"wood", 4}, {"brick", 4}, {"sheep", 2}, {"wheat", 2}, {"ore", 0}};
+        players[i].addResources(resources);
         bool choice = false, choice2 = false;
         while (!choice)
         {
@@ -296,6 +306,9 @@ void GameManager::firstRound()
             std::cout << "Building a settlement give me x,y for tile and the vertex z" << std::endl;
             std::cin >> x >> y >> z;
             choice = BuildSettlement(x, y, z, &players[i], false) ? true : (std::cout << "Settlement build failed" << std::endl, false); // hope it works
+            if (choice)                                                                                                                  // need to give resources
+            {
+            }
             choice2 = !choice;
             while (!choice2)
             { // if it's true then I want to build a road

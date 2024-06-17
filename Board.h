@@ -30,22 +30,22 @@ public:
     Board();
     ~Board();
 
-    void placeRobber(int x, int y);       // not implmented yet but it enters into the tile and turn off the flag tha allows me to get resources
+    void placeRobber(int x, int y);       // I have not been asked to implment this, but technically it's just a flag on the tile
     void moveRobber(int x, int y);        // undo the tiles so it can get resources and do the same thing as place robber
     void generateResources(int diceRoll); // give the resources to the playres assigned to that tile according to the settelments
-    void setupBoard();
-    void printBoard();
-    void getTile(size_t x, size_t y);
+    void setupBoard(); //init 
+    void printBoard(); //print
+    void getTile(size_t x, size_t y);//print
     std::vector<std::vector<Tile>> getTiles();
     bool buildSet(int x, int y, int z, Player *player, bool);
     void printTileSet(int x, int y);
     bool upgradeToCity(int x, int y, int z, Player *player);
     Vertex *getVertex(int x, int y, int z);
-    void showRoads(int x, int y);
+    void showRoads(int x, int y);//print
     bool buildRoad(int x, int y, int z, Player *player);
     bool tradeResources(Player &me, Player &other, std::map<std::string, int> offer, std::map<std::string, int> request);
     bool BuyDevelopmentCard(Player *player);
-
+    void giveFirstRoundResources(Player *player, int x, int y, int z);
 private:
     void setupCards();
     std::vector<std::vector<Tile>> tiles;

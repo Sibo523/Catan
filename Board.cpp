@@ -17,7 +17,7 @@ Board::~Board() // I wanted a simple implemantation of the destructor but I had 
     delete player;
     for (int i = 0; i < cards.size(); i++)
     {
-        // delete cards[i];
+        delete cards[i]; // added from the test
     }
     for (size_t i = 0; i < (size_t)tiles.size(); i++)
     {
@@ -30,9 +30,6 @@ Board::~Board() // I wanted a simple implemantation of the destructor but I had 
 
                 if (road != nullptr && deletedRoads.count(road) == 0)
                 {
-                    // if(road->getOwnerPtr()!=nullptr){
-                    //     delete road->getOwnerPtr();
-                    // }
                     delete road;
                     deletedRoads.insert(road);
                 }
@@ -207,7 +204,7 @@ bool Board::buildSet(int x, int y, int z, Player *player, bool midgame)
             return false; // no road close to me can't reach
         }
     }
-    int ver = tiles[x][y].getVertex(z).getOwnerint(); // I know what is the name of the owner
+    int ver = tiles[x][y].getVertex(z).getOwnerint(); // I know what is the name of the vertex
 
     std::vector<std::pair<Tile, int>> relevantTiles;
     ReleventTiles(ver, relevantTiles);
@@ -677,7 +674,13 @@ bool Board::switchRoad(int x, int y, int z, Player *player)
     }
     return false; // Default case if z is not 1-6
 }
-
+void Board::giveFirstRoundResources(Player *player, int x, int y, int z)
+{
+    if (tiles[x][y].getVertex(z).isSettled())
+    {
+        player->addResource(tiles[x][y].getResource(), tiles[x][y].getVertex(z).getSettlement().getAmount());
+    }
+}
 bool Board::buildRoad(int x, int y, int z, Player *player)
 {
     if (tiles[x][y].getRoadPtr(z)->getOwner().getName() != "")

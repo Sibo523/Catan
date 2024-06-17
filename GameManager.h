@@ -38,6 +38,7 @@ private:
     bool tradeWithOtherPlayers(size_t other, std::map<std::string, int> resourcesGiven, std::map<std::string, int> resourcesReceived);
     bool BuyDevelopmentCard(Player *player);
     bool useDevelopmentCard(Player *player, std::string cardType);
+    void giveFirstRoundResources(Player *player, int x, int y, int z);
 };
 
 #endif // GAMEMANAGER_H

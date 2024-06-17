@@ -22,8 +22,11 @@ echo "1 2 3\
     "wood"\
     "brick"\
     8\
+    6\
     6" |./catan
-
+#    resources = {{"wood", 8}, {"brick", 8}, {"sheep", 6}, {"wheat", 6}, {"ore", 1}}; // aight
+#    these are the resources for the start to run the game and do stuff without being depended on the dice roll just to
+#    show what I can do in the game, and try and experimnet technically the player should return 0
 
 # echo "1 2 3\
 #     1 2 2\

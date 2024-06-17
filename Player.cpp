@@ -4,7 +4,9 @@ Player::Player(std::string playerName, std::string color) // didn't do decunstor
     : color(color), name(playerName), victoryPoints(0)
 {
     // Initialize resources to 0
-    resources = {{"wood", 8}, {"brick", 8}, {"sheep", 6}, {"wheat", 6}, {"ore", 1}}; // aight
+    // resources = {{"wood", 8}, {"brick", 8}, {"sheep", 6}, {"wheat", 6}, {"ore", 1}}; // game to expreimet and show
+    // resources = {{"wood", 4}, {"brick", 4}, {"sheep", 2}, {"wheat", 2}, {"ore", 0}}; // in a real game
+    resources = {{"wood", 0}, {"brick", 0}, {"sheep", 0}, {"wheat", 0}, {"ore", 0}}; // in a real game
 }
 std::map<std::string, int> Player::getResources() const
 {
@@ -141,9 +143,11 @@ bool Player::buyDevCard(Card *c)
         resources["sheep"] -= 1;
         resources["ore"] -= 1;
         resources["wheat"] -= 1;
+
         if (c->getType() == "VictoryPoint")
         {
             victoryPoints++;
+            std::cout << victoryPoints;
             delete c;
             return true;
         }

@@ -71,7 +71,9 @@
         "valarray": "cpp",
         "variant": "cpp",
         "unordered_set": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "csignal": "cpp",
+        "set": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }
