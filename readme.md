@@ -140,11 +140,17 @@ and to finally run the code
 ## RelatedImages
 These Images used in the process of making the game in order to give me intuation.
 Hope it helps :)
-
+### The Board after running the last test
+![alt text](./RelatedImages/lastTest.png)
+### How the board should look like
 ![BoardVertexes](./RelatedImages/howtheboardshouldlooklikeVertexwise.jpeg)
+### How I connect close vertexes
 ![ConnectVertexes](./RelatedImages/howIconnectVertexes.jpeg)
+### Intuation for how I check for close Roads
 ![HowICheckForcloseRoads](./RelatedImages/howICheckForcloseRoads.jpeg)
+### Test passed
 ![PassTests](./RelatedImages/PassTests.png)
+### Valgrind Check
 ![ValgrindCheck](./RelatedImages/Valgrind.png)
 
 ## Contact
