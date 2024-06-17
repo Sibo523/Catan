@@ -7,8 +7,10 @@ I created an interactive Catan game
 ## Table of Contents
 
 - [Installation](#installation)
+- [Manu-Game](#Manu-Game)
 - [Usage](#usage)
 - [Contact](#contact)
+
 
 ## Installation
 for Arch:
@@ -27,12 +29,23 @@ for Ubuntu:
 ```
 
 Step-by-step instructions on how to install the project.
+## Manu-Game
+There are 9 modes when playing the game 
+1. Build a settlement in a givent cordinates
+2. Buy development card
+3. Build a road
+4. Upgrade settlment
+5. Trade with other players
+6. next turn
+7. print board
+8. show resources
+9. use development card
 
 ## Usage
 
 to compile the code you can make "all" target
 ```
-    make all
+    make all##
 ```
 to run the game use 
 ```
