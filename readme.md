@@ -10,6 +10,7 @@ I created an interactive Catan game
 - [Manu-Game](#Manu-Game)
 - [Usage](#usage)
 - [TestCases](#TestCases)
+- [RelatedImages](#RelatedImages)
 - [Contact](#contact)
 
 
@@ -136,6 +137,8 @@ and to finally run the code
 ### GameManager Test Cases
 
 - **GameManager Test Case**: Covers the initiation of the game, player interactions, and win condition evaluations.
+## RelatedImages
+![Image Description](./RelatedImages/Valgrind.png)
 ## Contact
 
 Roi Sibony, Roisi20041@gmail.com
