@@ -1,0 +1,192 @@
+@startuml
+class Board {
+    + Board()
+    + ~Board()
+
+    + void placeRobber(int x, int y)
+    + void moveRobber(int x, int y)
+    + void generateResources(int diceRoll)
+    
+    + void printBoard()
+    + void getTile(size_t x, size_t y)
+    + void printTileSet(int x, int y)
+    + void showRoads(int x, int y)
+    
+    + bool buildRoad(int x, int y, int z, Player* player)
+    + bool buildSet(int x, int y, int z, Player* player, bool)
+    + bool upgradeToCity(int x, int y, int z, Player* player)
+    
+    + bool tradeResources(Player &me, Player &other, std::map<std::string, int> offer, std::map<std::string, int> request)
+    + bool BuyDevelopmentCard(Player* player)
+    + void giveFirstRoundResources(Player* player, int x)
+    + Vertex* getVertex(int x, int y, int z)
+    
+    - void setupBoard()
+    - void setupCards()
+    
+    - std::vector<std::vector<Tile>> tiles
+    - std::vector<Card*> cards
+    - Player* player
+    - bool checkValidTile(size_t x, size_t y)
+    - void ReleventTiles(int, std::vector<std::pair<Tile, int>>& tiles)
+    - void put3254(int x, int y, Vertex* v1, Vertex* v2)
+    - void fourToOne(int x, int y)
+    - void sixToTwo(int x, int y)
+    - void connect5to2(int x, int y, Road* r1)
+    - void connect1to4(int x, int y, Road* r1)
+    - void connect6to3(int x, int y, Road* r1)
+    - void initializeVertices()
+    - void initializeTiles()
+    - void initializeRoads()
+    - int generate_number_token(std::vector<std::pair<int, int>>& numberTokens)
+    - std::string generate_resource(std::vector<std::pair<std::string, int>>& numberTokens)
+    - bool switchy(int x, int y, int z, Player* player)
+    - bool rightSet(int x, int y, int z, Player* player)
+    - bool switchRoad(int x, int y, int z, Player* player)
+    - bool checkforRoad(int x, int y, int z, Player* player)
+    - bool switchRoadforSettlment(int x, int y, int z, Player* player)
+    - std::vector<std::pair<int, int>> ports
+    - std::pair<int, int> robberPosition
+}
+
+
+class GameManager {
+    -std::vector<Player> players
+    -Board board
+    -int currentTurn
+    -std::string gameState
+
+    +GameManager(std::vector<Player> gamePlayers)
+    +~GameManager()
+    +void startGame()
+    +bool checkWinCondition()
+    +void play()
+    +bool upgradeToCity(int x, int y, int z)
+    +Player *getPlayer()
+    +bool BuildSettlement(size_t row, size_t col, int z, Player *name, bool flag)
+    +bool buildRoad(int, int, int, Player *player)
+    +void get(size_t row, size_t col)
+    +void getSettlmets(int x, int y)
+    +void printBoard()
+    +void showRoads(int, int)
+    +void endGame()
+    -void firstRound()
+    -void nextTurn()
+    -bool tradeWithOtherPlayers(size_t other, std::map<std::string, int> resourcesGiven, std::map<std::string, int> resourcesReceived)
+    -bool BuyDevelopmentCard(Player *player)
+    -bool useDevelopmentCard(Player *player, std::string cardType)
+    -void giveFirstRoundResources(Player *player, int x)
+}
+
+class Road {
+    -Player* owner
+
+    +Road(Player* owner)
+    +Player getOwner() const
+    +Player* getOwnerPtr()
+    +void print()
+    +void setOwner(Player* newOwner)
+}
+
+class Settlement {
+    -int amount
+    -Player* owner
+
+    +Settlement(Player* owner)
+    +~Settlement()
+    +void upgradeToCity()
+    +Player getOwner() const
+    +Player* getOwnerPtr()
+    +int getAmount() const
+}
+
+class Tile {
+    -std::string type
+    -int numberToken
+    -std::array<Vertex*, 6> vertices
+
+    +Tile(std::string type, int numberToken)
+    +std::string getResource() const
+    +int getNumberToken() const
+    +std::string toString() const
+    +void addVertex(Vertex* v, size_t index)
+    +void print()
+    +Vertex getVertex(size_t index)
+    +Vertex* getVertexPointer(size_t index)
+    +bool neighborSet(size_t index)
+    +void printSettelments()
+    +void printRoads()
+}
+
+class Vertex {
+    -bool flag
+    -int owner
+    -int numberToken
+    -Settlement* set
+
+    +Vertex(int owner, int numberToken)
+    +~Vertex()
+    +std::string getOwner()
+    +bool isSettled()
+    +void settle(Settlement* s)
+    +int getOwnerint()
+    +Player getOwnerPlayer()
+    +Player* getOwnerPlayerPtr()
+    +Settlement getSettlement()
+    +Settlement* getSettlementPtr()
+    +bool operator==(const Vertex& other) const
+}
+
+class Player {
+    -int knightCount
+    -std::vector<Card *> developmentCards
+    -std::string color
+    -std::string name
+    -std::map<std::string, int> resources
+    -int victoryPoints
+
+    +Player(std::string name, std::string color)
+    +~Player()
+    +bool buildSettlement()
+    +bool upgradeToCity()
+    +void addResource(std::string resource, int amount)
+    +bool buildRoad()
+    +std::string showResources()
+    +std::string getName() const
+    +std::string getColor() const
+    +int getVictoryPoints() const
+    +void subtractResources(const std::map<std::string, int> &subtracted)
+    +void addResources(const std::map<std::string, int> &additional)
+    +bool hasResources(const std::map<std::string, int> &required) const
+    +bool buyDevCard(Card *card)
+    +bool useDevelopmentCard(std::string cardType)
+    +std::map<std::string, int> getResources() const
+    +void addKnight()
+    +int getKnightCount() const
+    +void largestArmy()
+    +int amountOfTotalResources() const
+    +void discardHalfResources()
+    -bool canBuildRoad() const
+    -bool canBuildSettlement() const
+    -bool canBuyDevCard() const
+    -bool canUpgradeCity() const
+}
+
+GameManager --> Player
+GameManager --> Board
+Board --> Tile
+Board --> Road
+Tile --> Vertex
+Vertex --> Settlement
+Road --> Player
+Settlement --> Player
+Player --> Card
+
+Card <|-- DevelopmentCard
+DevelopmentCard <|-- MonopolyCard
+DevelopmentCard <|-- RoadBuildingCard
+DevelopmentCard <|-- YearOfPlentyCard
+Card <|-- KnightCard
+Card <|-- VictoryPointCard
+
+@enduml

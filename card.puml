@@ -1,0 +1,58 @@
+@startuml
+
+
+class Card {
+    +~Card()
+    +~Card() = default
+    +void use() = 0
+    +std::string getType() const = 0
+}
+
+class DevelopmentCard extends Card {
+    +~DevelopmentCard() override
+    +void use() override
+    +std::string getType() const override
+}
+
+class MonopolyCard extends DevelopmentCard {
+    +~MonopolyCard() override
+    +void use() override
+    +std::string getType() const override
+}
+
+class RoadBuildingCard extends DevelopmentCard {
+    +~RoadBuildingCard() override
+    +void use() override
+    +std::string getType() const override
+}
+
+class YearOfPlentyCard extends DevelopmentCard {
+    +~YearOfPlentyCard() override
+    +void use() override
+    +std::string getType() const override
+}
+
+class KnightCard extends Card {
+    +~KnightCard() override
+    +void use() override
+    +std::string getType() const override
+}
+
+class VictoryPointCard extends Card {
+    +~VictoryPointCard() override
+    +void use() override
+    +std::string getType() const override
+}
+
+Card <|-- DevelopmentCard
+DevelopmentCard <|-- MonopolyCard
+DevelopmentCard <|-- RoadBuildingCard
+DevelopmentCard <|-- YearOfPlentyCard
+Card <|-- KnightCard
+Card <|-- VictoryPointCard
+
+
+
+
+
+@enduml
