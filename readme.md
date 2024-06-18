@@ -147,6 +147,10 @@ Hope it helps :)
 ![ConnectVertexes](./RelatedImages/howIconnectVertexes.jpeg)
 ### Intuation for how I check for close Roads
 ![HowICheckForcloseRoads](./RelatedImages/howICheckForcloseRoads.jpeg)
+### UML for the cards
+![UML](./RelatedImages/cardUml.png)
+### UML for the whole game
+![UML](./RelatedImages/game_uml.png)
 ### Test passed
 ![PassTests](./RelatedImages/PassTests.png)
 ### Valgrind Check
