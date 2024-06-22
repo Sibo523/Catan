@@ -136,7 +136,6 @@ and to finally run the code
 ### GameManager Test Cases
 
 - **GameManager Test Case**: Covers the initiation of the game, player interactions, and win condition evaluations.
-  
 <!DOCTYPE html>
 <html>
 <head>
@@ -178,7 +177,6 @@ and to finally run the code
 
 </body>
 </html>
-
 
 ## Contact
 Roi Sibony, Roisi20041@gmail.com
