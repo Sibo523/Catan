@@ -137,29 +137,48 @@ and to finally run the code
 
 - **GameManager Test Case**: Covers the initiation of the game, player interactions, and win condition evaluations.
   
-<table>
-    <tr>
-        <td><strong>Board Layout and Vertex Connections</strong></td>
-        <td><strong>Road Checks and UML Diagrams</strong></td>
-        <td><strong>Testing and Validation</strong></td>
-    </tr>
-    <tr>
-        <td>
-            <img src="./RelatedImages/lastTest.png" alt="Final Board After Last Test"><br>
-            <img src="./RelatedImages/howtheboardshouldlooklikeVertexwise.jpeg" alt="Desired Board Appearance"><br>
-            <img src="./RelatedImages/howIconnectVertexes.jpeg" alt="Connecting Close Vertices">
-        </td>
-        <td>
-            <img src="./RelatedImages/howICheckForcloseRoads.jpeg" alt="Checking for Close Roads"><br>
-            <img src="./RelatedImages/cardUml.png" alt="UML Diagram for Cards"><br>
-            <img src="./RelatedImages/game_uml.png" alt="Overall Game UML Diagram">
-        </td>
-        <td>
-            <img src="./RelatedImages/PassTests.png" alt="Successful Test Completion"><br>
-            <img src="./RelatedImages/Valgrind.png" alt="Memory Leak Check with Valgrind">
-        </td>
-    </tr>
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+   .image-table {
+        display: inline-block;
+        margin-right: 20px; /* Adjust spacing between tables */
+    }
+    img {
+        max-width: 100%; /* Ensure images scale nicely */
+        height: auto;
+    }
+</style>
+</head>
+<body>
+
+<!-- Board Layout and Vertex Connections -->
+<div class="image-table">
+    <h3>Board Layout and Vertex Connections</h3>
+    <img src="./RelatedImages/lastTest.png" alt="Final Board After Last Test">
+    <img src="./RelatedImages/howtheboardshouldlooklikeVertexwise.jpeg" alt="Desired Board Appearance">
+    <img src="./RelatedImages/howIconnectVertexes.jpeg" alt="Connecting Close Vertices">
+</div>
+
+<!-- Road Checks and UML Diagrams -->
+<div class="image-table">
+    <h3>Road Checks and UML Diagrams</h3>
+    <img src="./RelatedImages/howICheckForcloseRoads.jpeg" alt="Checking for Close Roads">
+    <img src="./RelatedImages/cardUml.png" alt="UML Diagram for Cards">
+    <img src="./RelatedImages/game_uml.png" alt="Overall Game UML Diagram">
+</div>
+
+<!-- Testing and Validation -->
+<div class="image-table">
+    <h3>Testing and Validation</h3>
+    <img src="./RelatedImages/PassTests.png" alt="Successful Test Completion">
+    <img src="./RelatedImages/Valgrind.png" alt="Memory Leak Check with Valgrind">
+</div>
+
+</body>
+</html>
+
 
 ## Contact
 Roi Sibony, Roisi20041@gmail.com
