@@ -136,47 +136,55 @@ and to finally run the code
 ### GameManager Test Cases
 
 - **GameManager Test Case**: Covers the initiation of the game, player interactions, and win condition evaluations.
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-   .image-table {
-        display: inline-block;
-        margin-right: 20px; /* Adjust spacing between tables */
-    }
-    img {
-        max-width: 100%; /* Ensure images scale nicely */
-        height: auto;
-    }
-</style>
-</head>
-<body>
+# Game Development Visual Aids
 
-<!-- Board Layout and Vertex Connections -->
-<div class="image-table">
-    <h3>Board Layout and Vertex Connections</h3>
-    <img src="./RelatedImages/lastTest.png" alt="Final Board After Last Test">
-    <img src="./RelatedImages/howtheboardshouldlooklikeVertexwise.jpeg" alt="Desired Board Appearance">
-    <img src="./RelatedImages/howIconnectVertexes.jpeg" alt="Connecting Close Vertices">
-</div>
+This section contains various images that were instrumental during the development of our game. These visuals helped us conceptualize different aspects of the game, such as the board layout, vertex connections, road checks, and the overall structure through UML diagrams.
 
-<!-- Road Checks and UML Diagrams -->
-<div class="image-table">
-    <h3>Road Checks and UML Diagrams</h3>
-    <img src="./RelatedImages/howICheckForcloseRoads.jpeg" alt="Checking for Close Roads">
-    <img src="./RelatedImages/cardUml.png" alt="UML Diagram for Cards">
-    <img src="./RelatedImages/game_uml.png" alt="Overall Game UML Diagram">
-</div>
+## Board Layout and Vertex Connections
 
-<!-- Testing and Validation -->
-<div class="image-table">
-    <h3>Testing and Validation</h3>
-    <img src="./RelatedImages/PassTests.png" alt="Successful Test Completion">
-    <img src="./RelatedImages/Valgrind.png" alt="Memory Leak Check with Valgrind">
-</div>
+### Final Board After Last Test
+![Final Board After Last Test](./RelatedImages/lastTest.png)
 
-</body>
-</html>
+This image shows the final state of the game board after executing the last round of tests.
+
+### Desired Board Appearance (Vertex-wise)
+![Desired Board Appearance](./RelatedImages/howtheboardshouldlooklikeVertexwise.jpeg)
+
+An illustration of how the game board should ideally appear when considering the vertices.
+
+### Connecting Close Vertices
+![Connecting Close Vertices](./RelatedImages/howIconnectVertexes.jpeg)
+
+A visual guide on how we connect vertices that are in close proximity to each other.
+
+## Road Checks and UML Diagrams
+
+### Checking for Close Roads
+![Checking for Close Roads](./RelatedImages/howICheckForcloseRoads.jpeg)
+
+This diagram explains our approach to checking for roads that are close to each other on the game board.
+
+### UML Diagram for Cards
+![UML Diagram for Cards](./RelatedImages/cardUml.png)
+
+A UML diagram outlining the structure and relationships of the card system within the game.
+
+### Overall Game UML Diagram
+![Overall Game UML Diagram](./RelatedImages/game_uml.png)
+
+A comprehensive UML diagram that represents the entire game's architecture and component interactions.
+
+## Testing and Validation
+
+### Successful Test Completion
+![Successful Test Completion](./RelatedImages/PassTests.png)
+
+A screenshot indicating that all tests have been successfully completed.
+
+### Memory Leak Check with Valgrind
+![Memory Leak Check with Valgrind](./RelatedImages/Valgrind.png)
+
+The result of a memory leak check using Valgrind, confirming no leaks were detected.
 
 ## Contact
 Roi Sibony, Roisi20041@gmail.com
