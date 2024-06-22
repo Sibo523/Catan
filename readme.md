@@ -136,25 +136,30 @@ and to finally run the code
 ### GameManager Test Cases
 
 - **GameManager Test Case**: Covers the initiation of the game, player interactions, and win condition evaluations.
-## RelatedImages
-These Images used in the process of making the game in order to give me intuation.
-Hope it helps :)
-### The Board after running the last test
-![alt text](./RelatedImages/lastTest.png)
-### How the board should look like
-![BoardVertexes](./RelatedImages/howtheboardshouldlooklikeVertexwise.jpeg)
-### How I connect close vertexes
-![ConnectVertexes](./RelatedImages/howIconnectVertexes.jpeg)
-### Intuation for how I check for close Roads
-![HowICheckForcloseRoads](./RelatedImages/howICheckForcloseRoads.jpeg)
-### UML for the cards
-![UML](./RelatedImages/cardUml.png)
-### UML for the whole game
-![UML](./RelatedImages/game_uml.png)
-### Test passed
-![PassTests](./RelatedImages/PassTests.png)
-### Valgrind Check
-![ValgrindCheck](./RelatedImages/Valgrind.png)
+  
+<table>
+    <tr>
+        <td><strong>Board Layout and Vertex Connections</strong></td>
+        <td><strong>Road Checks and UML Diagrams</strong></td>
+        <td><strong>Testing and Validation</strong></td>
+    </tr>
+    <tr>
+        <td>
+            <img src="./RelatedImages/lastTest.png" alt="Final Board After Last Test"><br>
+            <img src="./RelatedImages/howtheboardshouldlooklikeVertexwise.jpeg" alt="Desired Board Appearance"><br>
+            <img src="./RelatedImages/howIconnectVertexes.jpeg" alt="Connecting Close Vertices">
+        </td>
+        <td>
+            <img src="./RelatedImages/howICheckForcloseRoads.jpeg" alt="Checking for Close Roads"><br>
+            <img src="./RelatedImages/cardUml.png" alt="UML Diagram for Cards"><br>
+            <img src="./RelatedImages/game_uml.png" alt="Overall Game UML Diagram">
+        </td>
+        <td>
+            <img src="./RelatedImages/PassTests.png" alt="Successful Test Completion"><br>
+            <img src="./RelatedImages/Valgrind.png" alt="Memory Leak Check with Valgrind">
+        </td>
+    </tr>
+</table>
 
 ## Contact
 Roi Sibony, Roisi20041@gmail.com
